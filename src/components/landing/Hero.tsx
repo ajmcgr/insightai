@@ -27,7 +27,7 @@ const Hero = () => {
           Find the latest trends online
         </motion.h1>
         <motion.p 
-          className="text-xl text-white/90 mb-8"
+          className="text-xl font-normal text-white/90 mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
