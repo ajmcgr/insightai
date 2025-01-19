@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu } from "lucide-react";
+import { Menu, HelpCircle, Settings, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -45,9 +45,13 @@ const Navigation = () => {
         
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
-          <Link to="/about" className="text-base text-white hover:text-white/80 transition-colors font-medium">About</Link>
-          <Link to="/pricing" className="text-base text-white hover:text-white/80 transition-colors font-medium">Pricing</Link>
-          <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-base text-white hover:text-white/80 transition-colors font-medium">Blog</a>
+          {!user && (
+            <>
+              <Link to="/about" className="text-base text-white hover:text-white/80 transition-colors font-medium">About</Link>
+              <Link to="/pricing" className="text-base text-white hover:text-white/80 transition-colors font-medium">Pricing</Link>
+              <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-base text-white hover:text-white/80 transition-colors font-medium">Blog</a>
+            </>
+          )}
         </div>
         
         <div className="hidden md:flex items-center gap-4">
@@ -60,18 +64,22 @@ const Navigation = () => {
                 Insights
               </Link>
               <Link 
+                to="/help" 
+                className="text-base px-4 py-2 text-white hover:text-white/80 transition-colors font-medium"
+              >
+                <HelpCircle className="w-5 h-5" />
+              </Link>
+              <Link 
                 to="/dashboard" 
                 className="text-base px-4 py-2 text-white hover:text-white/80 transition-colors font-medium"
               >
-                Dashboard
+                <Settings className="w-5 h-5" />
               </Link>
               <button 
                 onClick={handleSignOut}
-                className="text-base px-6 py-3 bg-white text-[#d7cf7e] rounded-lg 
-                         hover:bg-white/90 transition-all duration-200
-                         font-medium tracking-wide"
+                className="text-base p-2 text-white hover:text-white/80 transition-colors"
               >
-                Sign Out
+                <LogOut className="w-5 h-5" />
               </button>
             </>
           ) : (
@@ -112,23 +120,27 @@ const Navigation = () => {
           transition={{ duration: 0.2 }}
         >
           <div className="flex flex-col gap-4">
-            <Link to="/about" className="text-base text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">About</Link>
-            <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-base text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">Blog</a>
+            {!user && (
+              <>
+                <Link to="/about" className="text-base text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">About</Link>
+                <Link to="/pricing" className="text-base text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">Pricing</Link>
+                <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-base text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">Blog</a>
+              </>
+            )}
             <Link to="/help" className="text-base text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">Help</Link>
-            <hr className="border-neutral-200" />
             {user ? (
               <>
                 <Link to="/insight" className="text-base text-primary hover:text-primary/80 transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg text-left">
                   Insights
                 </Link>
                 <Link to="/dashboard" className="text-base text-primary hover:text-primary/80 transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg text-left">
-                  Dashboard
+                  Account Settings
                 </Link>
                 <button 
                   onClick={handleSignOut}
-                  className="button-secondary w-full text-base"
+                  className="button-secondary w-full text-base flex items-center gap-2 justify-center"
                 >
-                  Sign Out
+                  <LogOut className="w-4 h-4" /> Sign Out
                 </button>
               </>
             ) : (
