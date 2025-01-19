@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import {
   Pagination,
   PaginationContent,
@@ -26,6 +27,45 @@ interface TrendItem {
 
 const ITEMS_PER_PAGE = 25;
 
+const fetchTrendData = async (country: string, category: string, device: string) => {
+  console.log("Fetching trend data with filters:", { country, category, device });
+  
+  // First try to get data from Supabase
+  const { data: existingData, error } = await supabase
+    .from('search_trends')
+    .select('*')
+    .eq('country', country)
+    .eq('category', category)
+    .eq('device', device);
+
+  if (error) {
+    console.error("Error fetching from Supabase:", error);
+    throw error;
+  }
+
+  if (existingData && existingData.length > 0) {
+    console.log("Found existing data in Supabase:", existingData);
+    return existingData;
+  }
+
+  // If no data found, fetch from web using Edge Function
+  console.log("No existing data found, fetching from web...");
+  const { data: webData, error: webError } = await supabase.functions.invoke('fetch-trends', {
+    body: { 
+      country,
+      category,
+      device
+    }
+  });
+
+  if (webError) {
+    console.error("Error fetching from web:", webError);
+    throw webError;
+  }
+
+  return webData;
+};
+
 const Explore = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -34,8 +74,12 @@ const Explore = () => {
   const [selectedTimeRange, setSelectedTimeRange] = useState("past_week");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedDevice, setSelectedDevice] = useState("all");
-  const [trends, setTrends] = useState<TrendItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const { data: trends = [], isLoading, error } = useQuery({
+    queryKey: ['trends', selectedCountry, selectedCategory, selectedDevice],
+    queryFn: () => fetchTrendData(selectedCountry, selectedCategory, selectedDevice),
+  });
 
   useEffect(() => {
     const checkUser = async () => {
@@ -45,48 +89,41 @@ const Explore = () => {
         return;
       }
       setLoading(false);
-      // Mock data for demonstration - expanded to 100 items
-      const mockData = Array.from({ length: 100 }, (_, index) => ({
-        id: index + 1,
-        keyword: `Trend ${index + 1}`,
-        volume: Math.floor(Math.random() * 1000000),
-        change: Math.floor(Math.random() * 50) * (Math.random() > 0.5 ? 1 : -1),
-      }));
-      setTrends(mockData);
     };
 
     checkUser();
   }, [navigate]);
 
-  const handleFiltersChange = () => {
-    console.log("Filters changed:", { selectedCountry, selectedTimeRange, selectedCategory, selectedDevice });
-    toast({
-      title: "Filters Updated",
-      description: "Search trends have been updated based on your filters.",
-    });
-  };
-
   useEffect(() => {
-    handleFiltersChange();
-  }, [selectedCountry, selectedTimeRange, selectedCategory, selectedDevice]);
+    if (!isLoading && !error) {
+      toast({
+        title: "Trends Updated",
+        description: "Search trends have been updated based on your filters.",
+      });
+    }
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch trend data. Please try again.",
+        variant: "destructive",
+      });
+    }
+  }, [isLoading, error, toast]);
 
   const handleExportCSV = () => {
     console.log("Exporting trends to CSV");
     
-    // Create CSV headers
     const headers = ["Keyword", "Search Volume", "Change (%)"];
-    
-    // Convert trends data to CSV rows
     const csvRows = [
-      headers.join(","), // Header row
+      headers.join(","),
       ...trends.map(trend => [
-        `"${trend.keyword}"`, // Wrap in quotes to handle commas in keywords
+        `"${trend.keyword}"`,
         trend.volume,
         `${trend.change >= 0 ? '+' : ''}${trend.change}`
       ].join(","))
     ];
     
-    // Create blob and download
     const csvContent = csvRows.join("\n");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
@@ -115,7 +152,7 @@ const Explore = () => {
     console.log("Page changed to:", page);
   };
 
-  if (loading) {
+  if (loading || isLoading) {
     return (
       <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
