@@ -42,9 +42,9 @@ const Navigation = () => {
         
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
-          <Link to="/about" className="text-[15px] text-white hover:text-white/80 transition-colors font-medium">About</Link>
-          <Link to="/pricing" className="text-[15px] text-white hover:text-white/80 transition-colors font-medium">Pricing</Link>
-          <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-[15px] text-white hover:text-white/80 transition-colors font-medium">Blog</a>
+          <Link to="/about" className="text-base text-white hover:text-white/80 transition-colors font-medium">About</Link>
+          <Link to="/pricing" className="text-base text-white hover:text-white/80 transition-colors font-medium">Pricing</Link>
+          <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-base text-white hover:text-white/80 transition-colors font-medium">Blog</a>
         </div>
         
         <div className="hidden md:flex items-center gap-4">
@@ -52,13 +52,13 @@ const Navigation = () => {
             <>
               <Link 
                 to="/dashboard" 
-                className="text-[15px] px-4 py-2 text-white hover:text-white/80 transition-colors font-medium"
+                className="text-base px-4 py-2 text-white hover:text-white/80 transition-colors font-medium"
               >
                 Dashboard
               </Link>
               <button 
                 onClick={handleSignOut}
-                className="text-[15px] px-6 py-3 bg-white text-[#d7cf7e] rounded-lg 
+                className="text-base px-6 py-3 bg-white text-[#d7cf7e] rounded-lg 
                          hover:bg-white/90 transition-all duration-200
                          font-medium tracking-wide"
               >
@@ -69,13 +69,13 @@ const Navigation = () => {
             <>
               <Link 
                 to="/signin" 
-                className="text-[15px] px-4 py-2 text-white hover:text-white/80 transition-colors font-medium"
+                className="text-base px-4 py-2 text-white hover:text-white/80 transition-colors font-medium"
               >
                 Sign In
               </Link>
               <Link 
                 to="/signup"
-                className="text-[15px] px-6 py-3 bg-white text-[#d7cf7e] rounded-lg 
+                className="text-base px-6 py-3 bg-white text-[#d7cf7e] rounded-lg 
                          hover:bg-white/90 transition-all duration-200
                          font-medium tracking-wide"
               >
@@ -103,28 +103,28 @@ const Navigation = () => {
           transition={{ duration: 0.2 }}
         >
           <div className="flex flex-col gap-4">
-            <Link to="/about" className="text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">About</Link>
-            <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">Blog</a>
-            <Link to="/help" className="text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">Help</Link>
+            <Link to="/about" className="text-base text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">About</Link>
+            <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-base text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">Blog</a>
+            <Link to="/help" className="text-base text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">Help</Link>
             <hr className="border-neutral-200" />
             {user ? (
               <>
-                <Link to="/dashboard" className="text-primary hover:text-primary/80 transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg text-left">
+                <Link to="/dashboard" className="text-base text-primary hover:text-primary/80 transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg text-left">
                   Dashboard
                 </Link>
                 <button 
                   onClick={handleSignOut}
-                  className="button-secondary w-full"
+                  className="button-secondary w-full text-base"
                 >
                   Sign Out
                 </button>
               </>
             ) : (
               <>
-                <Link to="/signin" className="text-primary hover:text-primary/80 transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg text-left">
+                <Link to="/signin" className="text-base text-primary hover:text-primary/80 transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg text-left">
                   Sign In
                 </Link>
-                <Link to="/signup" className="button-secondary w-full">
+                <Link to="/signup" className="button-secondary w-full text-base">
                   Try for Free
                 </Link>
               </>
