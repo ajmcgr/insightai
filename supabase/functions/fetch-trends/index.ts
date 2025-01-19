@@ -13,14 +13,14 @@ serve(async (req) => {
   }
 
   try {
-    const { country, category, device } = await req.json()
+    const { keywords } = await req.json()
     const firecrawlApiKey = Deno.env.get('FIRECRAWL_API_KEY')
     
     if (!firecrawlApiKey) {
       throw new Error('Firecrawl API key not configured')
     }
 
-    console.log('Fetching trends with filters:', { country, category, device })
+    console.log('Fetching trends for keywords:', keywords)
 
     // Initialize Firecrawl
     const firecrawl = new FirecrawlApp({ apiKey: firecrawlApiKey })
@@ -31,58 +31,79 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    // Use Firecrawl to get trend data from Google Trends
-    const searchUrl = `https://trends.google.com/trends/explore?geo=${country}&cat=${category === 'all' ? '0' : category}`
-    console.log('Crawling URL:', searchUrl)
+    const trendData = []
     
-    const crawlResponse = await firecrawl.crawlUrl(searchUrl, {
-      limit: 25,
-      scrapeOptions: {
-        formats: ['html'],
+    for (const keyword of keywords) {
+      if (!keyword.trim()) continue;
+      
+      // Use Firecrawl to get trend data from Google Trends
+      const searchUrl = `https://trends.google.com/trends/explore?q=${encodeURIComponent(keyword)}`
+      console.log('Crawling URL:', searchUrl)
+      
+      const crawlResponse = await firecrawl.crawlUrl(searchUrl, {
+        limit: 1,
+        scrapeOptions: {
+          formats: ['html'],
+        }
+      })
+
+      if (!crawlResponse.success) {
+        console.error('Failed to crawl trends for keyword:', keyword)
+        continue
       }
-    })
 
-    if (!crawlResponse.success) {
-      console.error('Failed to crawl trends')
-      throw new Error('Failed to fetch trend data')
+      // Process the data and create a trend entry
+      const trendEntry = {
+        id: crypto.randomUUID(),
+        keyword: keyword.toLowerCase(),
+        volume: Math.floor(Math.random() * 1000000), // Simulated volume for now
+        change_percentage: Math.floor(Math.random() * 200) - 100,
+        country: 'us',
+        category: 'all',
+        device: 'all',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }
+
+      trendData.push(trendEntry)
     }
-
-    console.log('Successfully crawled trends data')
-
-    // Process the HTML to extract trending topics
-    // This is a simplified example - in reality you'd want to parse the HTML more carefully
-    const trendData = crawlResponse.data.map((item: any, index: number) => ({
-      id: crypto.randomUUID(),
-      keyword: item.title || `Trend ${index + 1}`,
-      volume: Math.floor(Math.random() * 1000000), // In reality, extract this from the HTML
-      change_percentage: Math.floor(Math.random() * 200) - 100,
-      country,
-      category,
-      device,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    }))
 
     // Store the trend data in Supabase
-    const { data: storedData, error: insertError } = await supabaseClient
-      .from('search_trends')
-      .insert(trendData)
-      .select()
+    if (trendData.length > 0) {
+      const { data: storedData, error: insertError } = await supabaseClient
+        .from('search_trends')
+        .upsert(trendData, { 
+          onConflict: 'keyword',
+          ignoreDuplicates: false 
+        })
+        .select()
 
-    if (insertError) {
-      console.error('Error storing trend data:', insertError)
-      throw insertError
+      if (insertError) {
+        console.error('Error storing trend data:', insertError)
+        throw insertError
+      }
+
+      console.log('Successfully stored trend data:', storedData)
+      
+      return new Response(
+        JSON.stringify({
+          success: true,
+          data: storedData
+        }),
+        {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        }
+      )
     }
-
-    console.log('Successfully stored trend data:', storedData)
 
     return new Response(
       JSON.stringify({
-        success: true,
-        data: storedData
+        success: false,
+        error: 'No valid keywords provided'
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 400,
       }
     )
   } catch (error) {
