@@ -1,12 +1,41 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
 import Navigation from "@/components/landing/Navigation";
 import Footer from "@/components/landing/Footer";
 import TrendChart from "@/components/trends/TrendChart";
 import KeywordComparison from "@/components/trends/KeywordComparison";
 import TrendFilters from "@/components/trends/TrendFilters";
-import { useToast } from "@/components/ui/use-toast";
+import { useQuery } from "@tanstack/react-query";
+
+interface TrendData {
+  keyword: string;
+  volume: number;
+  change_percentage: number;
+  country: string;
+  category: string;
+  device: string;
+  created_at: string;
+}
+
+const fetchTrendData = async (country: string, category: string, device: string) => {
+  console.log("Fetching trend data with filters:", { country, category, device });
+  
+  const { data, error } = await supabase
+    .from('search_trends')
+    .select('*')
+    .eq('country', country)
+    .eq('category', category === 'all' ? category : category)
+    .eq('device', device);
+
+  if (error) {
+    console.error("Error fetching trend data:", error);
+    throw error;
+  }
+
+  return data;
+};
 
 const Insight = () => {
   const navigate = useNavigate();
@@ -17,6 +46,11 @@ const Insight = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedDevice, setSelectedDevice] = useState("all");
   const [trendData, setTrendData] = useState<{ date: string; value: number; }[]>([]);
+
+  const { data: trends, isLoading: isTrendsLoading, error: trendsError } = useQuery({
+    queryKey: ['trends', selectedCountry, selectedCategory, selectedDevice],
+    queryFn: () => fetchTrendData(selectedCountry, selectedCategory, selectedDevice),
+  });
 
   useEffect(() => {
     const checkUser = async () => {
@@ -33,25 +67,41 @@ const Insight = () => {
 
   const handleCompare = async (keywords: string[]) => {
     console.log("Comparing keywords:", keywords);
-    // For demo purposes, generating mock trend data
-    const mockData = Array.from({ length: 30 }, (_, i) => ({
-      date: new Date(Date.now() - (29 - i) * 24 * 60 * 60 * 1000).toISOString(),
-      value: Math.floor(Math.random() * 100)
-    }));
-    setTrendData(mockData);
-    
-    toast({
-      title: "Trends Updated",
-      description: "Search trend data has been updated.",
-    });
+    if (trends) {
+      // Filter trends data based on keywords
+      const relevantTrends = trends.filter(trend => 
+        keywords.includes(trend.keyword.toLowerCase())
+      );
+
+      // Transform the data for the chart
+      const chartData = relevantTrends.map(trend => ({
+        date: trend.created_at,
+        value: trend.volume
+      }));
+
+      setTrendData(chartData);
+      
+      toast({
+        title: "Trends Updated",
+        description: "Search trend data has been updated.",
+      });
+    }
   };
 
-  if (loading) {
+  if (loading || isTrendsLoading) {
     return (
       <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
+  }
+
+  if (trendsError) {
+    toast({
+      title: "Error",
+      description: "Failed to fetch trend data. Please try again.",
+      variant: "destructive",
+    });
   }
 
   return (

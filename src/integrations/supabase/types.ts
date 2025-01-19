@@ -30,6 +30,42 @@ export type Database = {
         }
         Relationships: []
       }
+      search_trends: {
+        Row: {
+          category: string
+          change_percentage: number
+          country: string
+          created_at: string
+          device: string
+          id: string
+          keyword: string
+          updated_at: string
+          volume: number
+        }
+        Insert: {
+          category?: string
+          change_percentage?: number
+          country?: string
+          created_at?: string
+          device?: string
+          id?: string
+          keyword: string
+          updated_at?: string
+          volume?: number
+        }
+        Update: {
+          category?: string
+          change_percentage?: number
+          country?: string
+          created_at?: string
+          device?: string
+          id?: string
+          keyword?: string
+          updated_at?: string
+          volume?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
