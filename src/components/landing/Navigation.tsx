@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Menu } from "lucide-react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -8,16 +9,16 @@ const Navigation = () => {
   return (
     <nav className="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl z-50">
       <div className="glass-panel rounded-full px-6 py-4 flex items-center justify-between shadow-lg backdrop-blur-md">
-        <div className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2">
           <div className="w-8 h-8 bg-primary rounded-full"></div>
-          <span className="text-xl font-semibold">Lovely</span>
-        </div>
+          <span className="text-xl font-semibold">Insight AI</span>
+        </Link>
         
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
-          <a href="#features" className="text-neutral-600 hover:text-primary transition-colors font-medium">Features</a>
-          <a href="#pricing" className="text-neutral-600 hover:text-primary transition-colors font-medium">Pricing</a>
-          <a href="#about" className="text-neutral-600 hover:text-primary transition-colors font-medium">About</a>
+          <Link to="/about" className="text-neutral-600 hover:text-primary transition-colors font-medium">About</Link>
+          <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-neutral-600 hover:text-primary transition-colors font-medium">Blog</a>
+          <Link to="/help" className="text-neutral-600 hover:text-primary transition-colors font-medium">Help</Link>
         </div>
         
         <div className="hidden md:flex items-center gap-4">
@@ -47,9 +48,9 @@ const Navigation = () => {
           transition={{ duration: 0.2 }}
         >
           <div className="flex flex-col gap-4">
-            <a href="#features" className="text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">Features</a>
-            <a href="#pricing" className="text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">Pricing</a>
-            <a href="#about" className="text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">About</a>
+            <Link to="/about" className="text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">About</Link>
+            <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">Blog</a>
+            <Link to="/help" className="text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">Help</Link>
             <hr className="border-neutral-200" />
             <button className="text-primary hover:text-primary/80 transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg text-left">
               Log in
