@@ -6,6 +6,11 @@ import TrendChart from "@/components/trends/TrendChart";
 import { useQuery } from "@tanstack/react-query";
 import CategoriesSelect from "@/components/trends/CategoriesSelect";
 import KeywordComparison from "@/components/trends/KeywordComparison";
+import Navigation from "@/components/landing/Navigation";
+import Footer from "@/components/landing/Footer";
+import Hero from "@/components/landing/Hero";
+import Features from "@/components/landing/Features";
+import TrustedBy from "@/components/landing/TrustedBy";
 
 const COUNTRIES = [
   { value: "US", label: "United States" },
@@ -53,12 +58,13 @@ const Index = () => {
   console.log("Trend data fetched:", trendData);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-neutral-100">
+      <Navigation />
+      <Hero />
+      
       <main className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold mb-8">Search Trends</h1>
-        
         <div className="grid gap-6">
-          <Card className="p-6">
+          <Card className="p-6 bg-white/80 backdrop-blur-sm shadow-lg border border-neutral-200">
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium">Search Term</label>
@@ -66,6 +72,7 @@ const Index = () => {
                   placeholder="Enter search term..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
+                  className="bg-white"
                 />
               </div>
               
@@ -108,12 +115,12 @@ const Index = () => {
             </div>
           </Card>
 
-          <Card className="p-6">
+          <Card className="p-6 bg-white/80 backdrop-blur-sm shadow-lg border border-neutral-200">
             <KeywordComparison onCompare={setComparisonKeywords} />
           </Card>
 
           {(searchTerm || comparisonKeywords.some(k => k.length > 0)) && (
-            <Card className="p-6">
+            <Card className="p-6 bg-white/80 backdrop-blur-sm shadow-lg border border-neutral-200">
               <h2 className="text-2xl font-semibold mb-4">Trend Results</h2>
               {isLoading ? (
                 <div className="h-[400px] flex items-center justify-center">
@@ -133,6 +140,10 @@ const Index = () => {
           )}
         </div>
       </main>
+
+      <Features />
+      <TrustedBy />
+      <Footer />
     </div>
   );
 };
