@@ -33,7 +33,7 @@ const Navigation = () => {
   };
 
   return (
-    <nav className={`w-full ${!user ? 'bg-[#d7cf7e]' : 'bg-transparent'}`}>
+    <nav className={`w-full ${!user ? 'bg-[#d9d600]' : 'bg-transparent'}`}>
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link 
           to="/insight" 
@@ -101,7 +101,7 @@ const Navigation = () => {
               </Link>
               <Link 
                 to="/signup"
-                className="text-base px-6 py-3 bg-white text-[#d7cf7e] rounded-lg 
+                className="text-base px-6 py-3 bg-white text-[#d9d600] rounded-lg 
                          hover:bg-white/90 transition-all duration-200
                          font-medium tracking-wide"
               >

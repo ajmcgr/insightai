@@ -40,7 +40,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <button className="px-6 py-3 bg-white text-[#d7cf7e] rounded-lg 
+          <button className="px-6 py-3 bg-white text-[#d9d600] rounded-lg 
                          hover:bg-white/90 transition-all duration-200
                          font-medium tracking-wide">
             Sign Up →
