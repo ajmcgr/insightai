@@ -7,7 +7,11 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div>
             <Link to="/" className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 bg-primary rounded-full"></div>
+              <img 
+                src="/lovable-uploads/75243525-cede-4ed6-9233-4609cf93ddd9.png" 
+                alt="Insight AI Logo" 
+                className="w-8 h-8"
+              />
               <span className="text-xl font-semibold">Insight AI</span>
             </Link>
             <p className="text-neutral-600 text-sm">
