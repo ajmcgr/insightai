@@ -167,7 +167,7 @@ const Explore = () => {
         <div className="max-w-6xl mx-auto p-4 py-8">
           <div className="bg-white rounded-xl shadow-sm border p-8">
             <div className="flex justify-between items-center mb-8">
-              <h1 className="text-2xl font-semibold">Explore Search Trends</h1>
+              <h1 className="text-2xl font-semibold">Trending</h1>
               <Button onClick={handleExportCSV} variant="outline" size="sm">
                 <Download className="h-4 w-4 mr-2" />
                 Export CSV
