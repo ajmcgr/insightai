@@ -35,12 +35,18 @@ const Navigation = () => {
   return (
     <nav className="w-full bg-[#d7cf7e]">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
+        <Link 
+          to="/insight" 
+          className="flex items-center gap-2 group relative"
+        >
           <img 
             src="/lovable-uploads/75243525-cede-4ed6-9233-4609cf93ddd9.png" 
             alt="Logo" 
             className="w-[125px] h-auto"
           />
+          <span className="absolute left-0 -bottom-6 text-sm text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            Back to editor →
+          </span>
         </Link>
         
         {/* Desktop Navigation */}
@@ -57,12 +63,6 @@ const Navigation = () => {
         <div className="hidden md:flex items-center gap-4">
           {user ? (
             <>
-              <Link 
-                to="/insight" 
-                className="text-base px-4 py-2 text-white hover:text-white/80 transition-colors font-medium"
-              >
-                Insights
-              </Link>
               <Link 
                 to="/help" 
                 className="text-base px-4 py-2 text-white hover:text-white/80 transition-colors font-medium"
@@ -130,9 +130,6 @@ const Navigation = () => {
             <Link to="/help" className="text-base text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">Help</Link>
             {user ? (
               <>
-                <Link to="/insight" className="text-base text-primary hover:text-primary/80 transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg text-left">
-                  Insights
-                </Link>
                 <Link to="/dashboard" className="text-base text-primary hover:text-primary/80 transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg text-left">
                   Account Settings
                 </Link>
