@@ -5,14 +5,17 @@ import Navigation from "@/components/landing/Navigation";
 import Footer from "@/components/landing/Footer";
 import TrendChart from "@/components/trends/TrendChart";
 import KeywordComparison from "@/components/trends/KeywordComparison";
-import CategoriesSelect from "@/components/trends/CategoriesSelect";
+import TrendFilters from "@/components/trends/TrendFilters";
 import { useToast } from "@/components/ui/use-toast";
 
 const Insight = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
+  const [selectedCountry, setSelectedCountry] = useState("us");
+  const [selectedTimeRange, setSelectedTimeRange] = useState("past_week");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedDevice, setSelectedDevice] = useState("all");
   const [trendData, setTrendData] = useState<{ date: string; value: number; }[]>([]);
 
   useEffect(() => {
@@ -60,16 +63,19 @@ const Insight = () => {
             <h1 className="text-2xl font-semibold mb-8">Search Trends</h1>
             
             <div className="space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="md:col-span-2">
-                  <KeywordComparison onCompare={handleCompare} />
-                </div>
-                <div>
-                  <CategoriesSelect 
-                    value={selectedCategory} 
-                    onValueChange={setSelectedCategory} 
-                  />
-                </div>
+              <div className="grid grid-cols-1 gap-8">
+                <KeywordComparison onCompare={handleCompare} />
+                
+                <TrendFilters 
+                  country={selectedCountry}
+                  timeRange={selectedTimeRange}
+                  category={selectedCategory}
+                  device={selectedDevice}
+                  onCountryChange={setSelectedCountry}
+                  onTimeRangeChange={setSelectedTimeRange}
+                  onCategoryChange={setSelectedCategory}
+                  onDeviceChange={setSelectedDevice}
+                />
               </div>
 
               {trendData.length > 0 && (
