@@ -16,25 +16,45 @@ const Dashboard = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        navigate("/signin");
-        return;
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+          navigate("/signin");
+          return;
+        }
+        setUser(user);
+
+        const { data: profile, error } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (error) {
+          console.error("Error fetching profile:", error);
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to load profile data. Please try again.",
+          });
+          return;
+        }
+
+        setProfile(profile);
+      } catch (error: any) {
+        console.error("Error in getUser:", error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "An unexpected error occurred. Please try again.",
+        });
+      } finally {
+        setLoading(false);
       }
-      setUser(user);
-
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", user.id)
-        .single();
-
-      setProfile(profile);
-      setLoading(false);
     };
 
     getUser();
-  }, [navigate]);
+  }, [navigate, toast]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -97,13 +117,8 @@ const Dashboard = () => {
               </div>
 
               <div>
-                <h2 className="text-lg font-medium mb-2">Plan Status</h2>
-                <p className="text-neutral-600 capitalize">{profile?.plan_status || "Trial"}</p>
-                {profile?.plan_status === "trial" && (
-                  <p className="text-sm text-neutral-500 mt-1">
-                    Trial ends on {new Date(profile?.trial_end).toLocaleDateString()}
-                  </p>
-                )}
+                <h2 className="text-lg font-medium mb-2">Username</h2>
+                <p className="text-neutral-600">{profile?.username || "Not set"}</p>
               </div>
 
               <div>
