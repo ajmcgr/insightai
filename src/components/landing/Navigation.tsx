@@ -18,11 +18,14 @@ const Navigation = () => {
     getUser();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN') {
+        navigate('/insight');
+      }
       setUser(session?.user || null);
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [navigate]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -50,6 +53,12 @@ const Navigation = () => {
         <div className="hidden md:flex items-center gap-4">
           {user ? (
             <>
+              <Link 
+                to="/insight" 
+                className="text-base px-4 py-2 text-white hover:text-white/80 transition-colors font-medium"
+              >
+                Insights
+              </Link>
               <Link 
                 to="/dashboard" 
                 className="text-base px-4 py-2 text-white hover:text-white/80 transition-colors font-medium"
@@ -109,6 +118,9 @@ const Navigation = () => {
             <hr className="border-neutral-200" />
             {user ? (
               <>
+                <Link to="/insight" className="text-base text-primary hover:text-primary/80 transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg text-left">
+                  Insights
+                </Link>
                 <Link to="/dashboard" className="text-base text-primary hover:text-primary/80 transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg text-left">
                   Dashboard
                 </Link>
