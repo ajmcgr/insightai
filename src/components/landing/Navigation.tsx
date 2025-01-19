@@ -7,7 +7,7 @@ const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl z-50">
+    <nav className="top-4 w-[95%] max-w-6xl z-50 mx-auto">
       <div className="px-6 py-4 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <img 
