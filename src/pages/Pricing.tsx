@@ -1,36 +1,28 @@
 import Navigation from "@/components/landing/Navigation";
 import Footer from "@/components/landing/Footer";
-import Hero from "@/components/landing/Hero";
-import Features from "@/components/landing/Features";
-import FAQ from "@/components/landing/FAQ";
-import Enterprise from "@/components/landing/Enterprise";
 import PricingTable from "@/components/pricing/PricingTable";
 
-const Index = () => {
+const Pricing = () => {
   return (
     <div className="min-h-screen bg-neutral-100">
       <Navigation />
-      <Hero />
-      <Features />
       
-      <section className="py-24 bg-white">
+      <main className="py-24">
         <div className="container-padding">
           <div className="max-w-2xl mx-auto text-center mb-16">
-            <h2 className="heading-lg mb-6">Start Your Free Trial Today</h2>
+            <h1 className="heading-lg mb-6">Simple, Transparent Pricing</h1>
             <p className="text-lg text-neutral-600">
-              Experience the full power of our platform with a 7-day free trial.
+              Start with a 7-day free trial. No credit card required.
             </p>
           </div>
           
           <PricingTable />
         </div>
-      </section>
-      
-      <FAQ />
-      <Enterprise />
+      </main>
+
       <Footer />
     </div>
   );
 };
 
-export default Index;
+export default Pricing;
