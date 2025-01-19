@@ -12,7 +12,7 @@ const SignUp = () => {
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN") {
-        navigate("/dashboard");
+        navigate("/insight");
       }
     });
 
@@ -42,7 +42,7 @@ const SignUp = () => {
               }
             }}
             providers={["google"]}
-            redirectTo={`${window.location.origin}/dashboard`}
+            redirectTo={`${window.location.origin}/insight`}
             view="sign_up"
           />
         </div>
