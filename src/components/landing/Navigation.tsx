@@ -7,8 +7,8 @@ const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="top-4 w-[95%] max-w-6xl z-50 mx-auto bg-[#d7cf7e] rounded-lg">
-      <div className="px-6 py-4 flex items-center justify-between">
+    <nav className="w-full bg-[#d7cf7e]">
+      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <img 
             src="/lovable-uploads/75243525-cede-4ed6-9233-4609cf93ddd9.png" 
@@ -47,7 +47,7 @@ const Navigation = () => {
       {/* Mobile Navigation */}
       {isMenuOpen && (
         <motion.div 
-          className="md:hidden glass-panel mt-2 rounded-xl p-4 shadow-lg"
+          className="md:hidden glass-panel mt-2 rounded-xl p-4 shadow-lg mx-4"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
