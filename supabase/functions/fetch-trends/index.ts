@@ -13,14 +13,14 @@ serve(async (req) => {
   }
 
   try {
-    const { keywords } = await req.json()
+    const { country, category, device } = await req.json()
     const firecrawlApiKey = Deno.env.get('FIRECRAWL_API_KEY')
     
     if (!firecrawlApiKey) {
       throw new Error('Firecrawl API key not configured')
     }
 
-    console.log('Fetching trends for keywords:', keywords)
+    console.log('Fetching trends with filters:', { country, category, device })
 
     // Initialize Firecrawl
     const firecrawl = new FirecrawlApp({ apiKey: firecrawlApiKey })
@@ -31,69 +31,55 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    // Fetch data for each keyword
-    const results = await Promise.all(
-      keywords.map(async (keyword: string) => {
-        try {
-          console.log(`Crawling data for keyword: ${keyword}`)
-          // Use Firecrawl to get trend data from Google Trends
-          const searchUrl = `https://trends.google.com/trends/explore?q=${encodeURIComponent(keyword)}`
-          const crawlResponse = await firecrawl.crawlUrl(searchUrl, {
-            limit: 1,
-            scrapeOptions: {
-              formats: ['html'],
-            }
-          })
+    // Use Firecrawl to get trend data from Google Trends
+    const searchUrl = `https://trends.google.com/trends/explore?geo=${country}&cat=${category === 'all' ? '0' : category}`
+    console.log('Crawling URL:', searchUrl)
+    
+    const crawlResponse = await firecrawl.crawlUrl(searchUrl, {
+      limit: 25,
+      scrapeOptions: {
+        formats: ['html'],
+      }
+    })
 
-          if (!crawlResponse.success) {
-            console.error(`Failed to crawl for keyword: ${keyword}`)
-            return null
-          }
+    if (!crawlResponse.success) {
+      console.error('Failed to crawl trends')
+      throw new Error('Failed to fetch trend data')
+    }
 
-          console.log(`Successfully crawled data for keyword: ${keyword}`)
+    console.log('Successfully crawled trends data')
 
-          // Process the crawled data to extract trend information
-          // For now, we'll use random data as placeholder
-          // In a real implementation, you would parse the HTML to extract actual trend data
-          const volume = Math.floor(Math.random() * 1000)
-          const changePercentage = Math.floor(Math.random() * 100)
+    // Process the HTML to extract trending topics
+    // This is a simplified example - in reality you'd want to parse the HTML more carefully
+    const trendData = crawlResponse.data.map((item: any, index: number) => ({
+      id: crypto.randomUUID(),
+      keyword: item.title || `Trend ${index + 1}`,
+      volume: Math.floor(Math.random() * 1000000), // In reality, extract this from the HTML
+      change_percentage: Math.floor(Math.random() * 200) - 100,
+      country,
+      category,
+      device,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    }))
 
-          // Insert the trend data into Supabase
-          const { data, error } = await supabaseClient
-            .from('search_trends')
-            .insert({
-              keyword,
-              volume,
-              change_percentage: changePercentage,
-              country: 'us',
-              category: 'all',
-              device: 'all'
-            })
-            .select()
-            .single()
+    // Store the trend data in Supabase
+    const { data: storedData, error: insertError } = await supabaseClient
+      .from('search_trends')
+      .insert(trendData)
+      .select()
 
-          if (error) {
-            console.error('Error inserting trend data:', error)
-            return null
-          }
+    if (insertError) {
+      console.error('Error storing trend data:', insertError)
+      throw insertError
+    }
 
-          console.log(`Successfully stored trend data for keyword: ${keyword}`)
-          return data
-        } catch (error) {
-          console.error(`Error processing keyword ${keyword}:`, error)
-          return null
-        }
-      })
-    )
-
-    // Filter out null results and return
-    const validResults = results.filter(result => result !== null)
+    console.log('Successfully stored trend data:', storedData)
 
     return new Response(
-      JSON.stringify({ 
-        success: true, 
-        data: validResults,
-        message: `Successfully processed ${validResults.length} out of ${keywords.length} keywords`
+      JSON.stringify({
+        success: true,
+        data: storedData
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -102,10 +88,9 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error:', error)
     return new Response(
-      JSON.stringify({ 
-        success: false, 
-        error: error.message,
-        message: 'Failed to fetch trend data'
+      JSON.stringify({
+        success: false,
+        error: error.message
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
