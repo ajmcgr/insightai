@@ -19,15 +19,16 @@ interface TrendData {
   created_at: string;
 }
 
-const fetchTrendData = async (country: string, category: string, device: string) => {
-  console.log("Fetching trend data with filters:", { country, category, device });
+const fetchTrendData = async (keywords: string[], country: string, category: string, device: string) => {
+  console.log("Fetching trend data for keywords:", keywords);
   
   const { data, error } = await supabase
     .from('search_trends')
     .select('*')
     .eq('country', country)
     .eq('category', category === 'all' ? category : category)
-    .eq('device', device);
+    .eq('device', device)
+    .in('keyword', keywords.map(k => k.toLowerCase()));
 
   if (error) {
     console.error("Error fetching trend data:", error);
@@ -46,11 +47,7 @@ const Insight = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedDevice, setSelectedDevice] = useState("all");
   const [trendData, setTrendData] = useState<{ date: string; value: number; }[]>([]);
-
-  const { data: trends, isLoading: isTrendsLoading, error: trendsError } = useQuery({
-    queryKey: ['trends', selectedCountry, selectedCategory, selectedDevice],
-    queryFn: () => fetchTrendData(selectedCountry, selectedCategory, selectedDevice),
-  });
+  const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -65,25 +62,44 @@ const Insight = () => {
     checkUser();
   }, [navigate]);
 
+  const { data: trends, isLoading: isTrendsLoading, error: trendsError, refetch: refetchTrends } = useQuery({
+    queryKey: ['trends', selectedKeywords, selectedCountry, selectedCategory, selectedDevice],
+    queryFn: () => fetchTrendData(selectedKeywords, selectedCountry, selectedCategory, selectedDevice),
+    enabled: selectedKeywords.length > 0,
+  });
+
   const handleCompare = async (keywords: string[]) => {
     console.log("Comparing keywords:", keywords);
-    if (trends) {
-      // Filter trends data based on keywords
-      const relevantTrends = trends.filter(trend => 
-        keywords.includes(trend.keyword.toLowerCase())
-      );
+    setSelectedKeywords(keywords);
+    
+    try {
+      const data = await refetchTrends();
+      if (data.data && data.data.length > 0) {
+        // Transform the data for the chart
+        const chartData = data.data.map(trend => ({
+          date: trend.created_at,
+          value: trend.volume
+        }));
 
-      // Transform the data for the chart
-      const chartData = relevantTrends.map(trend => ({
-        date: trend.created_at,
-        value: trend.volume
-      }));
-
-      setTrendData(chartData);
-      
+        setTrendData(chartData);
+        
+        toast({
+          title: "Trends Updated",
+          description: `Found ${data.data.length} trend data points for the selected keywords.`,
+        });
+      } else {
+        toast({
+          title: "No Data Found",
+          description: "No trend data available for the selected keywords.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching trends:", error);
       toast({
-        title: "Trends Updated",
-        description: "Search trend data has been updated.",
+        title: "Error",
+        description: "Failed to fetch trend data. Please try again.",
+        variant: "destructive",
       });
     }
   };
