@@ -36,7 +36,7 @@ const Navigation = () => {
     <nav className={`w-full ${!user ? 'bg-[#d9d600]' : 'bg-transparent'}`}>
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link 
-          to="/insight" 
+          to={user ? "/insight" : "/"} 
           className="flex items-center gap-2 group relative"
         >
           <img 
@@ -44,9 +44,11 @@ const Navigation = () => {
             alt="Logo" 
             className="w-[125px] h-auto"
           />
-          <span className={`text-sm ${user ? 'text-black' : 'text-white'} opacity-0 group-hover:opacity-100 transition-opacity duration-200`}>
-            Back to trends →
-          </span>
+          {user && (
+            <span className="text-sm text-black opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              Back to trends →
+            </span>
+          )}
         </Link>
         
         {/* Desktop Navigation */}
