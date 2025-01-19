@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, HelpCircle, Settings, LogOut } from "lucide-react";
+import { Menu, HelpCircle, Settings, LogOut, Globe } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -58,6 +58,15 @@ const Navigation = () => {
               <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-base text-white hover:text-white/80 transition-colors font-medium">Blog</a>
             </>
           )}
+          {user && (
+            <Link 
+              to="/explore" 
+              className="text-base text-black hover:text-black/80 transition-colors font-medium flex items-center gap-2"
+            >
+              <Globe className="w-5 h-5" />
+              Explore
+            </Link>
+          )}
         </div>
         
         <div className="hidden md:flex items-center gap-4">
@@ -65,19 +74,19 @@ const Navigation = () => {
             <>
               <Link 
                 to="/help" 
-                className={`text-base px-4 py-2 ${user ? 'text-black hover:text-black/80' : 'text-white hover:text-white/80'} transition-colors font-medium`}
+                className="text-base px-4 py-2 text-black hover:text-black/80 transition-colors font-medium"
               >
                 <HelpCircle className="w-5 h-5" />
               </Link>
               <Link 
                 to="/dashboard" 
-                className={`text-base px-4 py-2 ${user ? 'text-black hover:text-black/80' : 'text-white hover:text-white/80'} transition-colors font-medium`}
+                className="text-base px-4 py-2 text-black hover:text-black/80 transition-colors font-medium"
               >
                 <Settings className="w-5 h-5" />
               </Link>
               <button 
                 onClick={handleSignOut}
-                className={`text-base p-2 ${user ? 'text-black hover:text-black/80' : 'text-white hover:text-white/80'} transition-colors`}
+                className="text-base p-2 text-black hover:text-black/80 transition-colors"
               >
                 <LogOut className="w-5 h-5" />
               </button>
@@ -126,6 +135,12 @@ const Navigation = () => {
                 <Link to="/pricing" className="text-base text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">Pricing</Link>
                 <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-base text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">Blog</a>
               </>
+            )}
+            {user && (
+              <Link to="/explore" className="text-base text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg flex items-center gap-2">
+                <Globe className="w-5 h-5" />
+                Explore
+              </Link>
             )}
             <Link to="/help" className="text-base text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">Help</Link>
             {user ? (
