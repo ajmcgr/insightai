@@ -1,4 +1,4 @@
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 interface TrendDataPoint {
   date: string;
@@ -8,6 +8,8 @@ interface TrendDataPoint {
 interface TrendChartProps {
   data: TrendDataPoint[];
 }
+
+const COLORS = ['#2563eb', '#dc2626', '#16a34a', '#9333ea', '#ea580c'];
 
 const TrendChart = ({ data }: TrendChartProps) => {
   const formatDate = (dateString: string) => {
@@ -45,7 +47,7 @@ const TrendChart = ({ data }: TrendChartProps) => {
           <Line
             type="monotone"
             dataKey="value"
-            stroke="#2563eb"
+            stroke={COLORS[0]}
             strokeWidth={2}
             dot={false}
           />
