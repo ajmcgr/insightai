@@ -44,7 +44,7 @@ const Navigation = () => {
             alt="Logo" 
             className="w-[125px] h-auto"
           />
-          <span className="absolute left-0 -bottom-6 text-sm text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <span className="text-sm text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             Back to editor →
           </span>
         </Link>
