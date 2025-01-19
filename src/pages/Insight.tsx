@@ -22,6 +22,10 @@ interface TrendData {
 const fetchTrendData = async (keywords: string[], country: string, category: string, device: string) => {
   console.log("Fetching trend data for keywords:", keywords);
   
+  if (!keywords.length || keywords.every(k => !k.trim())) {
+    return [];
+  }
+  
   // First try to fetch from Supabase
   const { data: existingData, error } = await supabase
     .from('search_trends')
@@ -39,25 +43,20 @@ const fetchTrendData = async (keywords: string[], country: string, category: str
   // If no data found, fetch from web
   if (!existingData || existingData.length === 0) {
     console.log("No existing data found, fetching from web...");
-    const response = await fetch('https://ordwbtojhvmeexqnguxv.supabase.co/functions/v1/fetch-trends', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,
-      },
-      body: JSON.stringify({ keywords }),
+    const { data, error } = await supabase.functions.invoke('fetch-trends', {
+      body: { keywords }
     });
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch trend data from web');
+    if (error) {
+      console.error("Error fetching from web:", error);
+      throw error;
     }
 
-    const webData = await response.json();
-    if (!webData.success) {
-      throw new Error(webData.error || 'Failed to fetch trend data from web');
+    if (!data.success) {
+      throw new Error(data.message || 'Failed to fetch trend data from web');
     }
 
-    return webData.data;
+    return data.data;
   }
 
   return existingData;
@@ -87,46 +86,32 @@ const Insight = () => {
     checkUser();
   }, [navigate]);
 
-  const { data: trends, isLoading: isTrendsLoading, error: trendsError, refetch: refetchTrends } = useQuery({
+  const { data: trends, isLoading: isTrendsLoading, error: trendsError } = useQuery({
     queryKey: ['trends', selectedKeywords, selectedCountry, selectedCategory, selectedDevice],
     queryFn: () => fetchTrendData(selectedKeywords, selectedCountry, selectedCategory, selectedDevice),
-    enabled: selectedKeywords.length > 0,
+    enabled: selectedKeywords.length > 0 && selectedKeywords.some(k => k.trim()),
   });
+
+  useEffect(() => {
+    if (trends && trends.length > 0) {
+      // Transform the data for the chart
+      const chartData = trends.map(trend => ({
+        date: trend.created_at,
+        value: trend.volume
+      }));
+
+      setTrendData(chartData);
+      
+      toast({
+        title: "Trends Updated",
+        description: `Found ${trends.length} trend data points.`,
+      });
+    }
+  }, [trends, toast]);
 
   const handleCompare = async (keywords: string[]) => {
     console.log("Comparing keywords:", keywords);
-    setSelectedKeywords(keywords);
-    
-    try {
-      const data = await refetchTrends();
-      if (data.data && data.data.length > 0) {
-        // Transform the data for the chart
-        const chartData = data.data.map(trend => ({
-          date: trend.created_at,
-          value: trend.volume
-        }));
-
-        setTrendData(chartData);
-        
-        toast({
-          title: "Trends Updated",
-          description: `Found ${data.data.length} trend data points for the selected keywords.`,
-        });
-      } else {
-        toast({
-          title: "No Data Found",
-          description: "No trend data available for the selected keywords.",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      console.error("Error fetching trends:", error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch trend data. Please try again.",
-        variant: "destructive",
-      });
-    }
+    setSelectedKeywords(keywords.filter(k => k.trim()));
   };
 
   if (loading || isTrendsLoading) {
