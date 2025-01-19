@@ -4,21 +4,7 @@ const Footer = () => {
   return (
     <footer className="border-t border-neutral-200 bg-white">
       <div className="container-padding py-12 md:py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <div>
-            <Link to="/" className="flex items-center gap-2 mb-6">
-              <img 
-                src="/lovable-uploads/75243525-cede-4ed6-9233-4609cf93ddd9.png" 
-                alt="Logo" 
-                className="w-8 h-8"
-              />
-              <span className="text-xl font-semibold">Trends</span>
-            </Link>
-            <p className="text-neutral-600 text-sm">
-              Discover what the world is searching for
-            </p>
-          </div>
-          
+        <div className="grid grid-cols-3 md:grid-cols-3 gap-8">
           <div>
             <h4 className="font-semibold mb-4">Company</h4>
             <ul className="space-y-3 text-sm text-neutral-600">
@@ -48,7 +34,7 @@ const Footer = () => {
 
         <div className="border-t border-neutral-200 mt-12 pt-8 flex flex-col items-center justify-center text-center">
           <p className="text-sm text-neutral-600">
-            Copyright © 2025 Works App, Inc. Built with ♥️ by Works.
+            Copyright © 2025 Works App, Inc. Built with ♥️ by <a href="https://www.works.xyz" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Works</a>.
           </p>
         </div>
       </div>
