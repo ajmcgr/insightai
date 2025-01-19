@@ -46,9 +46,9 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-neutral-200 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="border-t border-neutral-200 mt-12 pt-8 flex flex-col items-center justify-center text-center">
           <p className="text-sm text-neutral-600">
-            © 2024 Trends. All rights reserved.
+            Copyright © 2025 Works App, Inc. Built with ♥️ by Works.
           </p>
         </div>
       </div>
