@@ -43,7 +43,7 @@ const Hero = () => {
           <button className="px-6 py-3 bg-white text-[#d7cf7e] rounded-lg 
                          hover:bg-white/90 transition-all duration-200
                          font-medium tracking-wide">
-            Sign Up
+            Sign Up →
           </button>
           <div className="senja-embed" data-id="7a87e418-9f71-4dea-86cd-d747948d18e9" data-mode="shadow" data-lazyload="false"></div>
           
