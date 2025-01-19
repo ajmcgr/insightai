@@ -33,18 +33,18 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="w-full bg-[#d7cf7e]">
+    <nav className={`w-full ${!user ? 'bg-[#d7cf7e]' : 'bg-transparent'}`}>
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link 
           to="/insight" 
           className="flex items-center gap-2 group relative"
         >
           <img 
-            src="/lovable-uploads/75243525-cede-4ed6-9233-4609cf93ddd9.png" 
+            src={user ? "/lovable-uploads/e6346888-b6b1-4076-bea3-f4811e450005.png" : "/lovable-uploads/75243525-cede-4ed6-9233-4609cf93ddd9.png"}
             alt="Logo" 
             className="w-[125px] h-auto"
           />
-          <span className="text-sm text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <span className={`text-sm ${user ? 'text-black' : 'text-white'} opacity-0 group-hover:opacity-100 transition-opacity duration-200`}>
             Back to trends →
           </span>
         </Link>
@@ -65,19 +65,19 @@ const Navigation = () => {
             <>
               <Link 
                 to="/help" 
-                className="text-base px-4 py-2 text-white hover:text-white/80 transition-colors font-medium"
+                className={`text-base px-4 py-2 ${user ? 'text-black hover:text-black/80' : 'text-white hover:text-white/80'} transition-colors font-medium`}
               >
                 <HelpCircle className="w-5 h-5" />
               </Link>
               <Link 
                 to="/dashboard" 
-                className="text-base px-4 py-2 text-white hover:text-white/80 transition-colors font-medium"
+                className={`text-base px-4 py-2 ${user ? 'text-black hover:text-black/80' : 'text-white hover:text-white/80'} transition-colors font-medium`}
               >
                 <Settings className="w-5 h-5" />
               </Link>
               <button 
                 onClick={handleSignOut}
-                className="text-base p-2 text-white hover:text-white/80 transition-colors"
+                className={`text-base p-2 ${user ? 'text-black hover:text-black/80' : 'text-white hover:text-white/80'} transition-colors`}
               >
                 <LogOut className="w-5 h-5" />
               </button>
@@ -107,7 +107,7 @@ const Navigation = () => {
           className="md:hidden p-2 hover:bg-neutral-200/50 rounded-full transition-colors"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
-          <Menu className="w-6 h-6" />
+          <Menu className={`w-6 h-6 ${user ? 'text-black' : 'text-white'}`} />
         </button>
       </div>
 
