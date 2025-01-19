@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,7 +25,16 @@ const Navigation = () => {
       setUser(session?.user || null);
     });
 
-    return () => subscription.unsubscribe();
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      subscription.unsubscribe();
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, [navigate]);
 
   const handleSignOut = async () => {
@@ -33,7 +43,13 @@ const Navigation = () => {
   };
 
   return (
-    <nav className={`w-full ${!user ? 'bg-[#d9d600]' : 'bg-transparent'}`}>
+    <nav 
+      className={`w-full fixed top-0 z-50 transition-all duration-200 ${
+        isScrolled 
+          ? 'bg-white/80 backdrop-blur-sm shadow-sm' 
+          : `${!user ? 'bg-[#d9d600]' : 'bg-transparent'}`
+      }`}
+    >
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link 
           to={user ? "/insight" : "/"} 
