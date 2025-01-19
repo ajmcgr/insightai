@@ -40,7 +40,7 @@ const Navigation = () => {
           className="flex items-center gap-2 group relative"
         >
           <img 
-            src={user ? "/lovable-uploads/e6346888-b6b1-4076-bea3-f4811e450005.png" : "/lovable-uploads/75243525-cede-4ed6-9233-4609cf93ddd9.png"}
+            src={user ? "/lovable-uploads/36e1ae54-f402-431f-8382-aed76c12c264.png" : "/lovable-uploads/36e1ae54-f402-431f-8382-aed76c12c264.png"}
             alt="Logo" 
             className="w-[125px] h-auto"
           />
