@@ -1,31 +1,10 @@
-import { useState, useEffect } from "react";
-import { Menu, LogOut } from "lucide-react";
+import { useState } from "react";
+import { Menu } from "lucide-react";
 import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [session, setSession] = useState<any>(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    navigate("/auth");
-  };
 
   return (
     <nav className="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl z-50">
@@ -43,21 +22,12 @@ const Navigation = () => {
         </div>
         
         <div className="hidden md:flex items-center gap-4">
-          {session ? (
-            <Button variant="ghost" onClick={handleSignOut} className="flex items-center gap-2">
-              <LogOut className="w-4 h-4" />
-              Sign Out
-            </Button>
-          ) : (
-            <>
-              <Link to="/auth" className="px-4 py-2 text-primary hover:text-primary/80 transition-colors font-medium">
-                Sign In
-              </Link>
-              <Link to="/auth" className="button-secondary">
-                Sign Up
-              </Link>
-            </>
-          )}
+          <button className="px-4 py-2 text-primary hover:text-primary/80 transition-colors font-medium">
+            Sign In
+          </button>
+          <button className="button-secondary">
+            Sign Up
+          </button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -82,21 +52,12 @@ const Navigation = () => {
             <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">Blog</a>
             <Link to="/help" className="text-neutral-600 hover:text-primary transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg">Help</Link>
             <hr className="border-neutral-200" />
-            {session ? (
-              <Button variant="ghost" onClick={handleSignOut} className="flex items-center gap-2 justify-start">
-                <LogOut className="w-4 h-4" />
-                Sign Out
-              </Button>
-            ) : (
-              <>
-                <Link to="/auth" className="text-primary hover:text-primary/80 transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg text-left">
-                  Sign In
-                </Link>
-                <Link to="/auth" className="button-secondary w-full">
-                  Sign Up
-                </Link>
-              </>
-            )}
+            <button className="text-primary hover:text-primary/80 transition-colors font-medium px-4 py-2 hover:bg-neutral-200/50 rounded-lg text-left">
+              Log in
+            </button>
+            <button className="button-secondary w-full">
+              Try for Free
+            </button>
           </div>
         </motion.div>
       )}
