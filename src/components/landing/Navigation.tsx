@@ -45,7 +45,7 @@ const Navigation = () => {
             className="w-[125px] h-auto"
           />
           <span className="text-sm text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-            Back to editor →
+            Back to trends →
           </span>
         </Link>
         
