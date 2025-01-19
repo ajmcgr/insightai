@@ -4,14 +4,14 @@ import { Card } from "@/components/ui/card";
 const Features = () => {
   const features = [
     {
-      title: "Intelligent Task Management",
-      description: "Streamline your tasks and collaborate seamlessly with our cutting-edge SaaS startup platform.",
-      points: ["Smart Task Assignment", "Real-time Collaboration", "Data Security & Privacy"]
+      title: "Real-Time Trend Analysis",
+      description: "Stay ahead of the curve with our powerful trend analysis tools that track and analyze global search patterns.",
+      points: ["Live Search Trends", "Historical Data Analysis", "Regional Insights"]
     },
     {
-      title: "Advanced Analytics",
-      description: "Harness the power of AI-driven analytics to optimize your campaigns and understand your audience better.",
-      points: ["Smart Audience Segmentation", "Predictive Performance", "Real-time Visualization"]
+      title: "Trend Intelligence",
+      description: "Make data-driven decisions with our comprehensive trend intelligence platform that reveals what the world is searching for.",
+      points: ["Trend Forecasting", "Search Volume Metrics", "Competitive Analysis"]
     }
   ];
 
@@ -20,11 +20,11 @@ const Features = () => {
       <div className="container-padding">
         <div className="text-center mb-16">
           <span className="bg-accent-purple/10 text-accent-purple px-4 py-1.5 rounded-full text-sm font-medium">
-            TWO-COL FEATURES
+            TREND FEATURES
           </span>
-          <h2 className="heading-lg mt-6">Supercharge Your Workflows</h2>
+          <h2 className="heading-lg mt-6">Discover Global Search Trends</h2>
           <p className="text-neutral-600 mt-4 max-w-2xl mx-auto">
-            Unlock your team's true potential with our state-of-the-art SaaS platform.
+            Uncover valuable insights about what people are searching for worldwide
           </p>
         </div>
 
