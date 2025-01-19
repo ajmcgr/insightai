@@ -100,7 +100,7 @@ const Navigation = () => {
               </Link>
               <Link 
                 to="/signup"
-                className="text-base px-6 py-3 bg-white text-[#d9d600] rounded-lg 
+                className="text-base px-6 py-3 bg-white text-black rounded-lg 
                          hover:bg-white/90 transition-all duration-200
                          font-medium tracking-wide"
               >

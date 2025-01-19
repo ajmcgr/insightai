@@ -9,7 +9,7 @@ const Enterprise = () => {
           Custom solutions for high-volume press release needs. Let's discuss how we can help scale your communications.
         </p>
         <Button 
-          className="bg-accent-yellow text-white hover:bg-accent-yellow/90"
+          className="bg-accent-yellow text-black hover:bg-accent-yellow/90"
           onClick={() => window.location.href = 'mailto:enterprise@tryinsight.ai'}
         >
           Contact Us
