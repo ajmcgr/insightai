@@ -31,7 +31,7 @@ const Navigation = () => {
           <button className="text-[15px] px-6 py-3 bg-white text-[#d7cf7e] rounded-lg 
                          hover:bg-white/90 transition-all duration-200
                          font-medium tracking-wide">
-            Sign Up →
+            Sign Up
           </button>
         </div>
 
