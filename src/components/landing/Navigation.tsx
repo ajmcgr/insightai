@@ -55,9 +55,9 @@ const Navigation = () => {
         <div className="hidden md:flex items-center gap-8">
           {!user && (
             <>
-              <Link to="/about" className="text-base text-white hover:text-white/80 transition-colors font-medium">About</Link>
-              <Link to="/pricing" className="text-base text-white hover:text-white/80 transition-colors font-medium">Pricing</Link>
-              <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-base text-white hover:text-white/80 transition-colors font-medium">Blog</a>
+              <Link to="/about" className="text-base text-black hover:text-black/80 transition-colors font-medium">About</Link>
+              <Link to="/pricing" className="text-base text-black hover:text-black/80 transition-colors font-medium">Pricing</Link>
+              <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-base text-black hover:text-black/80 transition-colors font-medium">Blog</a>
             </>
           )}
         </div>
@@ -94,7 +94,7 @@ const Navigation = () => {
             <>
               <Link 
                 to="/signin" 
-                className="text-base px-4 py-2 text-white hover:text-white/80 transition-colors font-medium"
+                className="text-base px-4 py-2 text-black hover:text-black/80 transition-colors font-medium"
               >
                 Sign In
               </Link>
@@ -115,7 +115,7 @@ const Navigation = () => {
           className="md:hidden p-2 hover:bg-neutral-200/50 rounded-full transition-colors"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
-          <Menu className={`w-6 h-6 ${user ? 'text-black' : 'text-white'}`} />
+          <Menu className={`w-6 h-6 ${user ? 'text-black' : 'text-black'}`} />
         </button>
       </div>
 
