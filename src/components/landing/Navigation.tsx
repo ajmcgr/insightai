@@ -58,20 +58,17 @@ const Navigation = () => {
               <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-base text-white hover:text-white/80 transition-colors font-medium">Blog</a>
             </>
           )}
-          {user && (
-            <Link 
-              to="/explore" 
-              className="text-base text-black hover:text-black/80 transition-colors font-medium flex items-center gap-2"
-            >
-              <Globe className="w-5 h-5" />
-              Explore
-            </Link>
-          )}
         </div>
         
         <div className="hidden md:flex items-center gap-4">
           {user ? (
             <>
+              <Link 
+                to="/explore" 
+                className="text-base px-4 py-2 text-black hover:text-black/80 transition-colors font-medium"
+              >
+                <Globe className="w-5 h-5" />
+              </Link>
               <Link 
                 to="/help" 
                 className="text-base px-4 py-2 text-black hover:text-black/80 transition-colors font-medium"
