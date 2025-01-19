@@ -17,16 +17,16 @@ const Navigation = () => {
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
           <Link to="/about" className="text-neutral-600 hover:text-primary transition-colors font-medium">About</Link>
+          <Link to="/pricing" className="text-neutral-600 hover:text-primary transition-colors font-medium">Pricing</Link>
           <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-neutral-600 hover:text-primary transition-colors font-medium">Blog</a>
-          <Link to="/help" className="text-neutral-600 hover:text-primary transition-colors font-medium">Help</Link>
         </div>
         
         <div className="hidden md:flex items-center gap-4">
           <button className="px-4 py-2 text-primary hover:text-primary/80 transition-colors font-medium">
-            Log in
+            Sign In
           </button>
           <button className="button-secondary">
-            Try for Free
+            Sign Up
           </button>
         </div>
 
