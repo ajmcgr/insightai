@@ -19,15 +19,15 @@ const Hero = () => {
       {/* Hero content */}
       <div className="max-w-4xl mx-auto text-center relative z-10 pt-40 pb-32">
         <motion.h1 
-          className="font-serif heading-xl mb-6 text-white"
+          className="font-serif heading-xl mb-6 text-primary"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          Find the latest trends online
+          Explore the latest online trends
         </motion.h1>
         <motion.p 
-          className="text-xl font-normal text-white/90 mb-8"
+          className="text-xl font-normal text-primary mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -40,7 +40,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <button className="px-6 py-3 bg-white text-[#d9d600] rounded-lg 
+          <button className="px-6 py-3 bg-white text-primary rounded-lg 
                          hover:bg-white/90 transition-all duration-200
                          font-medium tracking-wide">
             Sign Up →

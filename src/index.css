@@ -26,11 +26,11 @@
   }
 
   .heading-xl {
-    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight;
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-primary;
   }
 
   .heading-lg {
-    @apply text-3xl md:text-4xl font-bold tracking-tight;
+    @apply text-3xl md:text-4xl font-bold tracking-tight text-primary;
   }
 
   .button-primary {
@@ -40,7 +40,7 @@
   }
 
   .button-secondary {
-    @apply px-6 py-3 bg-accent-purple text-white rounded-lg 
+    @apply px-6 py-3 bg-accent-purple text-primary rounded-lg 
            hover:bg-accent-purple/90 transition-all duration-200
            font-medium tracking-wide shadow-sm hover:shadow-md
            backdrop-blur-sm border border-white/10;
