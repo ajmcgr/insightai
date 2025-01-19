@@ -1,11 +1,9 @@
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
 import TrendChart from "@/components/trends/TrendChart";
 import { useQuery } from "@tanstack/react-query";
 import CategoriesSelect from "@/components/trends/CategoriesSelect";
-import KeywordComparison from "@/components/trends/KeywordComparison";
 import Navigation from "@/components/landing/Navigation";
 import Footer from "@/components/landing/Footer";
 import Hero from "@/components/landing/Hero";
@@ -28,31 +26,27 @@ const TIME_PERIODS = [
 ];
 
 const Index = () => {
-  const [searchTerm, setSearchTerm] = useState("");
   const [country, setCountry] = useState("US");
   const [timePeriod, setTimePeriod] = useState("7d");
   const [category, setCategory] = useState("all");
-  const [comparisonKeywords, setComparisonKeywords] = useState<string[]>([]);
 
-  // Mock data generation function
-  const generateMockData = (keywords: string[]) => {
-    console.log("Generating mock data for keywords:", keywords);
-    return keywords.map(keyword => ({
-      keyword,
+  // Mock data generation for trending topics
+  const generateMockData = () => {
+    console.log("Generating mock data for trending topics");
+    return [{
+      keyword: "Trending Topics",
       data: Array.from({ length: 10 }, (_, i) => ({
         date: new Date(Date.now() - (9 - i) * 24 * 60 * 60 * 1000).toISOString(),
         value: Math.floor(Math.random() * 100),
       }))
-    }));
+    }];
   };
 
   const { data: trendData, isLoading } = useQuery({
-    queryKey: ["trends", searchTerm, country, timePeriod, category, comparisonKeywords],
+    queryKey: ["trends", country, timePeriod, category],
     queryFn: async () => {
-      // In a real application, this would be an API call
-      return generateMockData([searchTerm, ...comparisonKeywords].filter(Boolean));
+      return generateMockData();
     },
-    enabled: Boolean(searchTerm) || comparisonKeywords.some(k => k.length > 0),
   });
 
   console.log("Trend data fetched:", trendData);
@@ -65,17 +59,7 @@ const Index = () => {
       <main className="container mx-auto px-4 py-8">
         <div className="grid gap-6">
           <Card className="p-6 bg-white/80 backdrop-blur-sm shadow-lg border border-neutral-200">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Search Term</label>
-                <Input
-                  placeholder="Enter search term..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="bg-white"
-                />
-              </div>
-              
+            <div className="grid gap-4 md:grid-cols-3">
               <div className="space-y-2">
                 <label className="text-sm font-medium">Country</label>
                 <Select value={country} onValueChange={setCountry}>
@@ -116,28 +100,22 @@ const Index = () => {
           </Card>
 
           <Card className="p-6 bg-white/80 backdrop-blur-sm shadow-lg border border-neutral-200">
-            <KeywordComparison onCompare={setComparisonKeywords} />
+            <h2 className="text-2xl font-semibold mb-4">Trending Topics</h2>
+            {isLoading ? (
+              <div className="h-[400px] flex items-center justify-center">
+                <p>Loading trends...</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {trendData?.map((trend, index) => (
+                  <div key={index}>
+                    <h3 className="text-lg font-medium mb-2">{trend.keyword}</h3>
+                    <TrendChart data={trend.data} />
+                  </div>
+                ))}
+              </div>
+            )}
           </Card>
-
-          {(searchTerm || comparisonKeywords.some(k => k.length > 0)) && (
-            <Card className="p-6 bg-white/80 backdrop-blur-sm shadow-lg border border-neutral-200">
-              <h2 className="text-2xl font-semibold mb-4">Trend Results</h2>
-              {isLoading ? (
-                <div className="h-[400px] flex items-center justify-center">
-                  <p>Loading trends...</p>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {trendData?.map((trend, index) => (
-                    <div key={index}>
-                      <h3 className="text-lg font-medium mb-2">{trend.keyword}</h3>
-                      <TrendChart data={trend.data} />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </Card>
-          )}
         </div>
       </main>
 

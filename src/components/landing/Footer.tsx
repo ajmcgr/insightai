@@ -9,13 +9,13 @@ const Footer = () => {
             <Link to="/" className="flex items-center gap-2 mb-6">
               <img 
                 src="/lovable-uploads/75243525-cede-4ed6-9233-4609cf93ddd9.png" 
-                alt="Insight AI Logo" 
+                alt="Logo" 
                 className="w-8 h-8"
               />
-              <span className="text-xl font-semibold">Insight AI</span>
+              <span className="text-xl font-semibold">Trends</span>
             </Link>
             <p className="text-neutral-600 text-sm">
-              Search Trends Analytics Platform
+              Discover what the world is searching for
             </p>
           </div>
           
@@ -48,7 +48,7 @@ const Footer = () => {
 
         <div className="border-t border-neutral-200 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-neutral-600">
-            © 2024 Insight AI. All rights reserved.
+            © 2024 Trends. All rights reserved.
           </p>
         </div>
       </div>
