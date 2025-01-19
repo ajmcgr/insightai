@@ -13,22 +13,22 @@ const Navigation = () => {
           <img 
             src="/lovable-uploads/75243525-cede-4ed6-9233-4609cf93ddd9.png" 
             alt="Logo" 
-            className="w-8 h-8"
+            className="w-[125px] h-auto"
           />
         </Link>
         
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
-          <Link to="/about" className="text-sm text-white hover:text-white/80 transition-colors font-medium">About</Link>
-          <Link to="/pricing" className="text-sm text-white hover:text-white/80 transition-colors font-medium">Pricing</Link>
-          <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-sm text-white hover:text-white/80 transition-colors font-medium">Blog</a>
+          <Link to="/about" className="text-[15px] text-white hover:text-white/80 transition-colors font-medium">About</Link>
+          <Link to="/pricing" className="text-[15px] text-white hover:text-white/80 transition-colors font-medium">Pricing</Link>
+          <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-[15px] text-white hover:text-white/80 transition-colors font-medium">Blog</a>
         </div>
         
         <div className="hidden md:flex items-center gap-4">
-          <button className="px-4 py-2 text-white hover:text-white/80 transition-colors font-medium">
+          <button className="text-[15px] px-4 py-2 text-white hover:text-white/80 transition-colors font-medium">
             Sign In
           </button>
-          <button className="px-6 py-3 bg-white text-primary rounded-lg 
+          <button className="text-[15px] px-6 py-3 bg-white text-primary rounded-lg 
                          hover:bg-white/90 transition-all duration-200
                          font-medium tracking-wide">
             Sign Up
