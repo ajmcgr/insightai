@@ -6,6 +6,14 @@ import Footer from "@/components/landing/Footer";
 import TrendFilters from "@/components/trends/TrendFilters";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 interface TrendItem {
   id: number;
@@ -13,6 +21,8 @@ interface TrendItem {
   volume: number;
   change: number;
 }
+
+const ITEMS_PER_PAGE = 25;
 
 const Explore = () => {
   const navigate = useNavigate();
@@ -23,6 +33,7 @@ const Explore = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedDevice, setSelectedDevice] = useState("all");
   const [trends, setTrends] = useState<TrendItem[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -32,14 +43,14 @@ const Explore = () => {
         return;
       }
       setLoading(false);
-      // Mock data for demonstration
-      setTrends([
-        { id: 1, keyword: "ChatGPT", volume: 1000000, change: 25 },
-        { id: 2, keyword: "Artificial Intelligence", volume: 750000, change: 15 },
-        { id: 3, keyword: "Machine Learning", volume: 500000, change: -5 },
-        { id: 4, keyword: "Data Science", volume: 250000, change: 10 },
-        { id: 5, keyword: "Neural Networks", volume: 100000, change: 5 },
-      ]);
+      // Mock data for demonstration - expanded to 100 items
+      const mockData = Array.from({ length: 100 }, (_, index) => ({
+        id: index + 1,
+        keyword: `Trend ${index + 1}`,
+        volume: Math.floor(Math.random() * 1000000),
+        change: Math.floor(Math.random() * 50) * (Math.random() > 0.5 ? 1 : -1),
+      }));
+      setTrends(mockData);
     };
 
     checkUser();
@@ -56,6 +67,17 @@ const Explore = () => {
   useEffect(() => {
     handleFiltersChange();
   }, [selectedCountry, selectedTimeRange, selectedCategory, selectedDevice]);
+
+  // Pagination calculations
+  const totalPages = Math.ceil(trends.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentTrends = trends.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    console.log("Page changed to:", page);
+  };
 
   if (loading) {
     return (
@@ -95,7 +117,7 @@ const Explore = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {trends.map((trend) => (
+                    {currentTrends.map((trend) => (
                       <TableRow key={trend.id}>
                         <TableCell className="font-medium">{trend.keyword}</TableCell>
                         <TableCell className="text-right">{trend.volume.toLocaleString()}</TableCell>
@@ -107,6 +129,35 @@ const Explore = () => {
                   </TableBody>
                 </Table>
               </div>
+
+              <Pagination className="mt-4">
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious 
+                      onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
+                      className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
+                    />
+                  </PaginationItem>
+                  
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <PaginationItem key={page}>
+                      <PaginationLink
+                        onClick={() => handlePageChange(page)}
+                        isActive={currentPage === page}
+                      >
+                        {page}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+                  
+                  <PaginationItem>
+                    <PaginationNext 
+                      onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
+                      className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
             </div>
           </div>
         </div>
