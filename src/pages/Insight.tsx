@@ -8,6 +8,7 @@ import TrendChart from "@/components/trends/TrendChart";
 import KeywordComparison from "@/components/trends/KeywordComparison";
 import TrendFilters from "@/components/trends/TrendFilters";
 import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface TrendData {
   keyword: string;
@@ -114,10 +115,54 @@ const Insight = () => {
     setSelectedKeywords(keywords.filter(k => k.trim()));
   };
 
-  if (loading || isTrendsLoading) {
+  if (loading) {
     return (
-      <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <div className="min-h-screen bg-neutral-50">
+        <Navigation />
+        <div className="flex-grow">
+          <div className="max-w-6xl mx-auto p-4 py-8">
+            <div className="bg-white rounded-xl shadow-sm border p-8">
+              <h1 className="text-2xl font-semibold mb-8">Search Trends</h1>
+              <div className="space-y-8">
+                <Skeleton className="h-12 w-full" />
+                <Skeleton className="h-[400px] w-full" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (isTrendsLoading) {
+    return (
+      <div className="min-h-screen bg-neutral-50">
+        <Navigation />
+        <div className="flex-grow">
+          <div className="max-w-6xl mx-auto p-4 py-8">
+            <div className="bg-white rounded-xl shadow-sm border p-8">
+              <h1 className="text-2xl font-semibold mb-8">Search Trends</h1>
+              <div className="space-y-8">
+                <KeywordComparison onCompare={handleCompare} />
+                <TrendFilters 
+                  country={selectedCountry}
+                  timeRange={selectedTimeRange}
+                  category={selectedCategory}
+                  device={selectedDevice}
+                  onCountryChange={setSelectedCountry}
+                  onTimeRangeChange={setSelectedTimeRange}
+                  onCategoryChange={setSelectedCategory}
+                  onDeviceChange={setSelectedDevice}
+                />
+                <div className="flex items-center justify-center p-12">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <Footer />
       </div>
     );
   }
