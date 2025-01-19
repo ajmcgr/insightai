@@ -6,7 +6,7 @@ const Hero = () => {
       {/* Hero content */}
       <div className="max-w-4xl mx-auto text-center relative z-10 pt-40 pb-32">
         <motion.h1 
-          className="font-serif heading-xl mb-6"
+          className="font-serif heading-xl mb-6 text-white"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -14,7 +14,7 @@ const Hero = () => {
           Find the latest trends online
         </motion.h1>
         <motion.p 
-          className="text-xl text-neutral-600 mb-8"
+          className="text-xl text-white/90 mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -27,10 +27,12 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <button className="button-primary flex items-center gap-2">
+          <button className="px-6 py-3 bg-white text-primary rounded-lg 
+                         hover:bg-white/90 transition-all duration-200
+                         font-medium tracking-wide">
             Get Started Now
           </button>
-          <button className="px-6 py-3 border border-neutral-300 rounded-lg hover:bg-neutral-200/50 transition-colors">
+          <button className="px-6 py-3 border border-white text-white rounded-lg hover:bg-white/10 transition-colors">
             Learn More
           </button>
         </motion.div>

@@ -8,28 +8,29 @@ const Navigation = () => {
 
   return (
     <nav className="fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl z-50">
-      <div className="glass-panel rounded-full px-6 py-4 flex items-center justify-between shadow-lg backdrop-blur-md">
+      <div className="px-6 py-4 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <img 
             src="/lovable-uploads/75243525-cede-4ed6-9233-4609cf93ddd9.png" 
-            alt="Insight AI Logo" 
+            alt="Logo" 
             className="w-8 h-8"
           />
-          <span className="text-xl font-semibold">Insight AI</span>
         </Link>
         
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-8">
-          <Link to="/about" className="text-neutral-600 hover:text-primary transition-colors font-medium">About</Link>
-          <Link to="/pricing" className="text-neutral-600 hover:text-primary transition-colors font-medium">Pricing</Link>
-          <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-neutral-600 hover:text-primary transition-colors font-medium">Blog</a>
+          <Link to="/about" className="text-sm text-white hover:text-white/80 transition-colors font-medium">About</Link>
+          <Link to="/pricing" className="text-sm text-white hover:text-white/80 transition-colors font-medium">Pricing</Link>
+          <a href="https://blog.works.xyz/" target="_blank" rel="noopener noreferrer" className="text-sm text-white hover:text-white/80 transition-colors font-medium">Blog</a>
         </div>
         
         <div className="hidden md:flex items-center gap-4">
-          <button className="px-4 py-2 text-primary hover:text-primary/80 transition-colors font-medium">
+          <button className="px-4 py-2 text-white hover:text-white/80 transition-colors font-medium">
             Sign In
           </button>
-          <button className="button-secondary">
+          <button className="px-6 py-3 bg-white text-primary rounded-lg 
+                         hover:bg-white/90 transition-all duration-200
+                         font-medium tracking-wide">
             Sign Up
           </button>
         </div>
