@@ -25,7 +25,7 @@ const CategoriesSelect = ({ value, onValueChange }: CategoriesSelectProps) => {
         <SelectTrigger>
           <SelectValue placeholder="Select category" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-white">
           {CATEGORIES.map((category) => (
             <SelectItem key={category.value} value={category.value}>
               {category.label}

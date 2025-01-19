@@ -59,7 +59,7 @@ const TrendFilters = ({
           <SelectTrigger>
             <SelectValue placeholder="Select country" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-white">
             {COUNTRIES.map((country) => (
               <SelectItem key={country.value} value={country.value}>
                 {country.label}
@@ -75,7 +75,7 @@ const TrendFilters = ({
           <SelectTrigger>
             <SelectValue placeholder="Select time range" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-white">
             {TIME_RANGES.map((range) => (
               <SelectItem key={range.value} value={range.value}>
                 {range.label}
@@ -91,8 +91,7 @@ const TrendFilters = ({
           <SelectTrigger>
             <SelectValue placeholder="Select category" />
           </SelectTrigger>
-          <SelectContent>
-            {/* Using existing categories from CategoriesSelect component */}
+          <SelectContent className="bg-white">
             <SelectItem value="all">All categories</SelectItem>
             <SelectItem value="business">Business</SelectItem>
             <SelectItem value="entertainment">Entertainment</SelectItem>
@@ -110,7 +109,7 @@ const TrendFilters = ({
           <SelectTrigger>
             <SelectValue placeholder="Select device" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-white">
             {DEVICES.map((device) => (
               <SelectItem key={device.value} value={device.value}>
                 {device.label}
