@@ -28,10 +28,10 @@ const Navigation = () => {
           <button className="text-[15px] px-4 py-2 text-white hover:text-white/80 transition-colors font-medium">
             Sign In
           </button>
-          <button className="text-[15px] px-6 py-3 bg-white text-transparent rounded-lg 
+          <button className="text-[15px] px-6 py-3 bg-white text-[#d7cf7e] rounded-lg 
                          hover:bg-white/90 transition-all duration-200
                          font-medium tracking-wide">
-            Sign Up
+            Sign Up →
           </button>
         </div>
 
