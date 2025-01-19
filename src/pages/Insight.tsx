@@ -22,7 +22,8 @@ interface TrendData {
 const fetchTrendData = async (keywords: string[], country: string, category: string, device: string) => {
   console.log("Fetching trend data for keywords:", keywords);
   
-  const { data, error } = await supabase
+  // First try to fetch from Supabase
+  const { data: existingData, error } = await supabase
     .from('search_trends')
     .select('*')
     .eq('country', country)
@@ -35,7 +36,31 @@ const fetchTrendData = async (keywords: string[], country: string, category: str
     throw error;
   }
 
-  return data;
+  // If no data found, fetch from web
+  if (!existingData || existingData.length === 0) {
+    console.log("No existing data found, fetching from web...");
+    const response = await fetch('https://ordwbtojhvmeexqnguxv.supabase.co/functions/v1/fetch-trends', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+      },
+      body: JSON.stringify({ keywords }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch trend data from web');
+    }
+
+    const webData = await response.json();
+    if (!webData.success) {
+      throw new Error(webData.error || 'Failed to fetch trend data from web');
+    }
+
+    return webData.data;
+  }
+
+  return existingData;
 };
 
 const Insight = () => {
