@@ -6,6 +6,8 @@ import Footer from "@/components/landing/Footer";
 import TrendFilters from "@/components/trends/TrendFilters";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -68,6 +70,40 @@ const Explore = () => {
     handleFiltersChange();
   }, [selectedCountry, selectedTimeRange, selectedCategory, selectedDevice]);
 
+  const handleExportCSV = () => {
+    console.log("Exporting trends to CSV");
+    
+    // Create CSV headers
+    const headers = ["Keyword", "Search Volume", "Change (%)"];
+    
+    // Convert trends data to CSV rows
+    const csvRows = [
+      headers.join(","), // Header row
+      ...trends.map(trend => [
+        `"${trend.keyword}"`, // Wrap in quotes to handle commas in keywords
+        trend.volume,
+        `${trend.change >= 0 ? '+' : ''}${trend.change}`
+      ].join(","))
+    ];
+    
+    // Create blob and download
+    const csvContent = csvRows.join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute("href", url);
+    link.setAttribute("download", `search_trends_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast({
+      title: "Export Successful",
+      description: "Your trends data has been exported to CSV.",
+    });
+  };
+
   // Pagination calculations
   const totalPages = Math.ceil(trends.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -93,7 +129,13 @@ const Explore = () => {
       <div className="flex-grow">
         <div className="max-w-6xl mx-auto p-4 py-8">
           <div className="bg-white rounded-xl shadow-sm border p-8">
-            <h1 className="text-2xl font-semibold mb-8">Explore Search Trends</h1>
+            <div className="flex justify-between items-center mb-8">
+              <h1 className="text-2xl font-semibold">Explore Search Trends</h1>
+              <Button onClick={handleExportCSV} variant="outline" size="sm">
+                <Download className="h-4 w-4 mr-2" />
+                Export CSV
+              </Button>
+            </div>
             
             <div className="space-y-8">
               <TrendFilters 
