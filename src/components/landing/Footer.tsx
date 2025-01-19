@@ -40,7 +40,7 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold mb-4">Connect</h4>
             <ul className="space-y-3 text-sm text-neutral-600">
-              <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Follow on X</a></li>
+              <li><a href="https://x.com/worksxyz/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Follow on X</a></li>
               <li><a href="mailto:support@tryinsight.ai" className="hover:text-primary transition-colors">Email Support</a></li>
             </ul>
           </div>
