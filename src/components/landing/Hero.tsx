@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   useEffect(() => {
@@ -40,12 +41,31 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <button className="px-6 py-3 bg-white text-primary rounded-lg 
-                         hover:bg-white/90 transition-all duration-200
-                         font-medium tracking-wide">
+          <Link 
+            to="/signup"
+            className="px-6 py-3 bg-white text-primary rounded-lg 
+                     hover:bg-white/90 transition-all duration-200
+                     font-medium tracking-wide"
+          >
             Sign Up →
-          </button>
+          </Link>
           <div className="senja-embed" data-id="7a87e418-9f71-4dea-86cd-d747948d18e9" data-mode="shadow" data-lazyload="false"></div>
+          
+          {/* Trial Features */}
+          <div className="flex gap-6 text-primary font-medium">
+            <div className="flex items-center gap-2">
+              <span className="text-accent-green">✓</span>
+              <span>7 days free trial</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-accent-green">✓</span>
+              <span>No credit card required</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-accent-green">✓</span>
+              <span>Cancel any-time</span>
+            </div>
+          </div>
           
           {/* Screenshot */}
           <motion.div 
