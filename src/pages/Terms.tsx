@@ -1,46 +1,37 @@
-import { Card } from "@/components/ui/card";
 import Navigation from "@/components/landing/Navigation";
 import Footer from "@/components/landing/Footer";
 
 const Terms = () => {
   return (
-    <div className="min-h-screen bg-neutral-100">
+    <div className="min-h-screen flex flex-col bg-neutral-100">
       <Navigation />
-      <main className="container mx-auto px-4 py-24">
-        <Card className="max-w-4xl mx-auto p-8 bg-white/80 backdrop-blur-sm">
-          <h1 className="text-4xl font-bold mb-8">Terms of Service</h1>
-          
-          <div className="prose prose-lg max-w-none">
-            <p className="mb-6">
-              By using Insight AI, you agree to these terms. Please read them carefully.
-            </p>
-
-            <h2 className="text-2xl font-bold mt-8 mb-4">1. Account Terms</h2>
-            <ul className="list-disc pl-6 mb-6 space-y-2">
-              <li>You must be 13 years or older to use this service</li>
-              <li>You must provide accurate and complete information when registering</li>
-              <li>You are responsible for maintaining the security of your account</li>
-              <li>You are responsible for all content posted and activity under your account</li>
-            </ul>
-
-            <h2 className="text-2xl font-bold mt-8 mb-4">2. Payment Terms</h2>
-            <ul className="list-disc pl-6 mb-6 space-y-2">
-              <li>Free trial period is 7 days</li>
-              <li>After the trial, subscription fees are charged in advance</li>
-              <li>No refunds for partial months of service</li>
-            </ul>
-
-            <h2 className="text-2xl font-bold mt-8 mb-4">3. Cancellation and Termination</h2>
-            <p className="mb-6">
-              You can cancel your account at any time. Upon cancellation:
-            </p>
-            <ul className="list-disc pl-6 mb-6 space-y-2">
-              <li>Your account will be deactivated</li>
-              <li>All data will be permanently deleted</li>
-              <li>No refunds will be provided for unused time</li>
-            </ul>
-          </div>
-        </Card>
+      <main className="flex-grow mt-[72px] mb-24">
+        <div className="container-padding py-16">
+          <h1 className="heading-lg mb-8">Terms of Service</h1>
+          <p className="text-lg text-neutral-600 mb-4">
+            Welcome to our Terms of Service. These terms govern your use of our services.
+          </p>
+          <h2 className="heading-lg mb-4">1. Acceptance of Terms</h2>
+          <p className="text-lg text-neutral-600 mb-4">
+            By accessing or using our services, you agree to be bound by these terms.
+          </p>
+          <h2 className="heading-lg mb-4">2. Changes to Terms</h2>
+          <p className="text-lg text-neutral-600 mb-4">
+            We may modify these terms at any time. Your continued use of the services after changes constitutes acceptance of the new terms.
+          </p>
+          <h2 className="heading-lg mb-4">3. User Responsibilities</h2>
+          <p className="text-lg text-neutral-600 mb-4">
+            You are responsible for your use of the services and for any content you provide.
+          </p>
+          <h2 className="heading-lg mb-4">4. Limitation of Liability</h2>
+          <p className="text-lg text-neutral-600 mb-4">
+            Our liability is limited to the maximum extent permitted by law.
+          </p>
+          <h2 className="heading-lg mb-4">5. Governing Law</h2>
+          <p className="text-lg text-neutral-600 mb-4">
+            These terms are governed by the laws of the jurisdiction in which we operate.
+          </p>
+        </div>
       </main>
       <Footer />
     </div>

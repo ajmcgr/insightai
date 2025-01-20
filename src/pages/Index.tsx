@@ -8,26 +8,28 @@ import PricingTable from "@/components/pricing/PricingTable";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-neutral-100">
+    <div className="min-h-screen flex flex-col bg-neutral-100">
       <Navigation />
-      <Hero />
-      <Features />
-      
-      <section className="py-24 bg-white">
-        <div className="container-padding">
-          <div className="max-w-2xl mx-auto text-center mb-16">
-            <h2 className="heading-lg mb-6">Start Your Free Trial Today</h2>
-            <p className="text-lg text-neutral-600">
-              Experience the full power of our platform with a 7-day free trial.
-            </p>
+      <main className="flex-grow mb-24">
+        <Hero />
+        <Features />
+        
+        <section className="py-24 bg-white">
+          <div className="container-padding">
+            <div className="max-w-2xl mx-auto text-center mb-16">
+              <h2 className="heading-lg mb-6">Start Your Free Trial Today</h2>
+              <p className="text-lg text-neutral-600">
+                Experience the full power of our platform with a 7-day free trial.
+              </p>
+            </div>
+            
+            <PricingTable />
           </div>
-          
-          <PricingTable />
-        </div>
-      </section>
-      
-      <FAQ />
-      <Enterprise />
+        </section>
+        
+        <FAQ />
+        <Enterprise />
+      </main>
       <Footer />
     </div>
   );
