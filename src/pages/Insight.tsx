@@ -32,7 +32,7 @@ const fetchTrendData = async (keywords: string[], country: string, category: str
     .from('search_trends')
     .select('*')
     .eq('country', country)
-    .eq('category', category === 'all' ? category : category)
+    .eq('category', category)
     .eq('device', device)
     .in('keyword', keywords.map(k => k.toLowerCase()));
 
@@ -41,16 +41,20 @@ const fetchTrendData = async (keywords: string[], country: string, category: str
     throw error;
   }
 
-  // If no data found, fetch from web
-  if (!existingData || existingData.length === 0) {
-    console.log("No existing data found, fetching from web...");
-    const { data, error } = await supabase.functions.invoke('fetch-trends', {
+  // If no data found or data is stale (older than 1 hour), fetch from web
+  const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+  const needsFresh = !existingData || existingData.length === 0 || 
+                    existingData.some(d => d.updated_at < oneHourAgo);
+
+  if (needsFresh) {
+    console.log("Fetching fresh data from web...");
+    const { data, error: fetchError } = await supabase.functions.invoke('fetch-trends', {
       body: { keywords }
     });
 
-    if (error) {
-      console.error("Error fetching from web:", error);
-      throw error;
+    if (fetchError) {
+      console.error("Error fetching from web:", fetchError);
+      throw fetchError;
     }
 
     if (!data.success) {
@@ -71,7 +75,6 @@ const Insight = () => {
   const [selectedTimeRange, setSelectedTimeRange] = useState("past_week");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedDevice, setSelectedDevice] = useState("all");
-  const [trendData, setTrendData] = useState<{ date: string; value: number; }[]>([]);
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
 
   useEffect(() => {
@@ -94,23 +97,16 @@ const Insight = () => {
   });
 
   useEffect(() => {
-    if (trends && trends.length > 0) {
-      // Transform the data for the chart
-      const chartData = trends.map(trend => ({
-        date: trend.created_at,
-        value: trend.volume
-      }));
-
-      setTrendData(chartData);
-      
+    if (trendsError) {
       toast({
-        title: "Trends Updated",
-        description: `Found ${trends.length} trend data points.`,
+        title: "Error",
+        description: "Failed to fetch trend data. Please try again.",
+        variant: "destructive",
       });
     }
-  }, [trends, toast]);
+  }, [trendsError, toast]);
 
-  const handleCompare = async (keywords: string[]) => {
+  const handleCompare = (keywords: string[]) => {
     console.log("Comparing keywords:", keywords);
     setSelectedKeywords(keywords.filter(k => k.trim()));
   };
@@ -119,7 +115,7 @@ const Insight = () => {
     return (
       <div className="min-h-screen bg-neutral-50">
         <Navigation />
-        <div className="flex-grow">
+        <div className="flex-grow mt-[72px]">
           <div className="max-w-6xl mx-auto p-4 py-8">
             <div className="bg-white rounded-xl shadow-sm border p-8">
               <h1 className="text-2xl font-semibold mb-8">Search Trends</h1>
@@ -135,50 +131,10 @@ const Insight = () => {
     );
   }
 
-  if (isTrendsLoading) {
-    return (
-      <div className="min-h-screen bg-neutral-50">
-        <Navigation />
-        <div className="flex-grow">
-          <div className="max-w-6xl mx-auto p-4 py-8">
-            <div className="bg-white rounded-xl shadow-sm border p-8">
-              <h1 className="text-2xl font-semibold mb-8">Search Trends</h1>
-              <div className="space-y-8">
-                <KeywordComparison onCompare={handleCompare} />
-                <TrendFilters 
-                  country={selectedCountry}
-                  timeRange={selectedTimeRange}
-                  category={selectedCategory}
-                  device={selectedDevice}
-                  onCountryChange={setSelectedCountry}
-                  onTimeRangeChange={setSelectedTimeRange}
-                  onCategoryChange={setSelectedCategory}
-                  onDeviceChange={setSelectedDevice}
-                />
-                <div className="flex items-center justify-center p-12">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
-  if (trendsError) {
-    toast({
-      title: "Error",
-      description: "Failed to fetch trend data. Please try again.",
-      variant: "destructive",
-    });
-  }
-
   return (
     <div className="min-h-screen flex flex-col bg-neutral-50">
       <Navigation />
-      <div className="flex-grow">
+      <div className="flex-grow mt-[72px] mb-24">
         <div className="max-w-6xl mx-auto p-4 py-8">
           <div className="bg-white rounded-xl shadow-sm border p-8">
             <h1 className="text-2xl font-semibold mb-8">Search Trends</h1>
@@ -199,11 +155,23 @@ const Insight = () => {
                 />
               </div>
 
-              {trendData.length > 0 && (
-                <div className="mt-8">
-                  <TrendChart data={trendData} />
+              {isTrendsLoading ? (
+                <div className="flex items-center justify-center p-12">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                 </div>
-              )}
+              ) : trends && trends.length > 0 ? (
+                <div className="mt-8">
+                  <TrendChart data={trends.map(trend => ({
+                    date: trend.created_at,
+                    value: trend.volume,
+                    keyword: trend.keyword
+                  }))} />
+                </div>
+              ) : selectedKeywords.length > 0 ? (
+                <div className="text-center py-12 text-gray-500">
+                  No trend data found for the selected keywords and filters.
+                </div>
+              ) : null}
             </div>
           </div>
         </div>

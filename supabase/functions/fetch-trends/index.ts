@@ -36,76 +36,66 @@ serve(async (req) => {
     for (const keyword of keywords) {
       if (!keyword.trim()) continue;
       
-      // Use Firecrawl to get trend data from Google Trends
-      const searchUrl = `https://trends.google.com/trends/explore?q=${encodeURIComponent(keyword)}`
-      console.log('Crawling URL:', searchUrl)
-      
-      const crawlResponse = await firecrawl.crawlUrl(searchUrl, {
-        limit: 1,
-        scrapeOptions: {
-          formats: ['html'],
-        }
-      })
-
-      if (!crawlResponse.success) {
-        console.error('Failed to crawl trends for keyword:', keyword)
-        continue
-      }
-
-      // Process the data and create a trend entry
-      const trendEntry = {
-        id: crypto.randomUUID(),
-        keyword: keyword.toLowerCase(),
-        volume: Math.floor(Math.random() * 1000000), // Simulated volume for now
-        change_percentage: Math.floor(Math.random() * 200) - 100,
-        country: 'us',
-        category: 'all',
-        device: 'all',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      }
-
-      trendData.push(trendEntry)
-    }
-
-    // Store the trend data in Supabase
-    if (trendData.length > 0) {
-      const { data: storedData, error: insertError } = await supabaseClient
-        .from('search_trends')
-        .upsert(trendData, { 
-          onConflict: 'keyword',
-          ignoreDuplicates: false 
+      try {
+        // Use Firecrawl to get trend data
+        const searchUrl = `https://trends.google.com/trends/explore?q=${encodeURIComponent(keyword)}`
+        console.log('Crawling URL:', searchUrl)
+        
+        const crawlResponse = await firecrawl.crawlUrl(searchUrl, {
+          limit: 1,
+          scrapeOptions: {
+            formats: ['html'],
+            waitUntil: 'networkidle0'
+          }
         })
-        .select()
 
-      if (insertError) {
-        console.error('Error storing trend data:', insertError)
-        throw insertError
-      }
-
-      console.log('Successfully stored trend data:', storedData)
-      
-      return new Response(
-        JSON.stringify({
-          success: true,
-          data: storedData
-        }),
-        {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        if (!crawlResponse.success) {
+          console.error('Failed to crawl trends for keyword:', keyword)
+          continue
         }
-      )
+
+        // Extract trend data from the response
+        const volume = Math.floor(Math.random() * 1000000) + 100000 // Simulated for now
+        const changePercentage = Math.floor(Math.random() * 200) - 100
+
+        // Create trend entry
+        const trendEntry = {
+          id: crypto.randomUUID(),
+          keyword: keyword.toLowerCase(),
+          volume,
+          change_percentage: changePercentage,
+          country: 'us',
+          category: 'all',
+          device: 'all',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        }
+
+        trendData.push(trendEntry)
+
+        // Store in Supabase for caching
+        const { error: insertError } = await supabaseClient
+          .from('search_trends')
+          .upsert(trendEntry)
+
+        if (insertError) {
+          console.error('Error storing trend data:', insertError)
+        }
+      } catch (error) {
+        console.error(`Error processing keyword ${keyword}:`, error)
+      }
     }
 
     return new Response(
       JSON.stringify({
-        success: false,
-        error: 'No valid keywords provided'
+        success: true,
+        data: trendData
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 400,
       }
     )
+
   } catch (error) {
     console.error('Error:', error)
     return new Response(
@@ -115,7 +105,7 @@ serve(async (req) => {
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 400,
+        status: 500,
       }
     )
   }
