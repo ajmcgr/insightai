@@ -43,13 +43,7 @@ const Navigation = () => {
   };
 
   return (
-    <nav 
-      className={`w-full fixed top-0 z-50 transition-all duration-200 ${
-        isScrolled 
-          ? 'bg-[#d9d600]' 
-          : `${!user ? 'bg-[#d9d600]' : 'bg-transparent'}`
-      }`}
-    >
+    <nav className="w-full fixed top-0 z-50 transition-all duration-200 bg-[#d9d600]">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link 
           to={user ? "/insight" : "/"} 
@@ -131,7 +125,7 @@ const Navigation = () => {
           className="md:hidden p-2 hover:bg-neutral-200/50 rounded-full transition-colors"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
-          <Menu className={`w-6 h-6 ${user ? 'text-black' : 'text-black'}`} />
+          <Menu className="w-6 h-6 text-black" />
         </button>
       </div>
 
