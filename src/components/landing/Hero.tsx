@@ -41,15 +41,18 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <Link 
-            to="/signup"
-            className="px-6 py-3 bg-white text-primary rounded-lg 
-                     hover:bg-white/90 transition-all duration-200
-                     font-medium tracking-wide"
-          >
-            Sign Up →
-          </Link>
-          <div className="senja-embed" data-id="7a87e418-9f71-4dea-86cd-d747948d18e9" data-mode="shadow" data-lazyload="false"></div>
+          {/* Sign Up button and Senja widget container */}
+          <div className="flex items-center gap-8 justify-center">
+            <Link 
+              to="/signup"
+              className="px-6 py-3 bg-white text-primary rounded-lg 
+                       hover:bg-white/90 transition-all duration-200
+                       font-medium tracking-wide"
+            >
+              Sign Up →
+            </Link>
+            <div className="senja-embed" data-id="7a87e418-9f71-4dea-86cd-d747948d18e9" data-mode="shadow" data-lazyload="false"></div>
+          </div>
           
           {/* Trial Features */}
           <div className="flex gap-6 text-primary font-medium">
