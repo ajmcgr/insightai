@@ -31,7 +31,7 @@ const Features = () => {
         {features.map((feature, index) => (
           <div key={feature.title} className={`flex flex-col md:flex-row gap-12 items-center mb-24 ${index % 2 === 1 ? 'md:flex-row-reverse' : ''}`}>
             <div className="flex-1">
-              <h3 className="text-2xl font-bold mb-4">{feature.title}</h3>
+              <h3 className="text-2xl font-bold mb-4 font-reckless">{feature.title}</h3>
               <p className="text-neutral-600 mb-6">{feature.description}</p>
               <ul className="space-y-4">
                 {feature.points.map((point) => (

@@ -1,6 +1,25 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'Reckless';
+  src: url('/fonts/Reckless-Regular.woff2') format('woff2'),
+       url('/fonts/Reckless-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Reckless';
+  src: url('/fonts/Reckless-Bold.woff2') format('woff2'),
+       url('/fonts/Reckless-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 @layer base {
   :root {
@@ -26,11 +45,11 @@
   }
 
   .heading-xl {
-    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-primary;
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-primary font-reckless;
   }
 
   .heading-lg {
-    @apply text-3xl md:text-4xl font-bold tracking-tight text-primary;
+    @apply text-3xl md:text-4xl font-bold tracking-tight text-primary font-reckless;
   }
 
   .button-primary {

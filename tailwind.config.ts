@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -52,6 +53,7 @@ export default {
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         serif: ['Merriweather', 'Georgia', 'serif'],
+        reckless: ['Reckless', 'serif'],
       },
       animation: {
         "fade-up": "fadeUp 0.5s ease-out forwards",

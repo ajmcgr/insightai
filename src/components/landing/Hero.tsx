@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -20,7 +21,7 @@ const Hero = () => {
       {/* Hero content */}
       <div className="max-w-4xl mx-auto text-center relative z-10 pt-40 pb-32">
         <motion.h1 
-          className="font-serif heading-xl mb-6 text-primary"
+          className="font-reckless heading-xl mb-6 text-primary"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
