@@ -5,7 +5,7 @@ const FAQ = () => {
   return (
     <section className="py-24 bg-white">
       <div className="container-padding max-w-4xl mx-auto">
-        <h2 className="text-3xl font-reckless font-bold text-center mb-12">Frequently Asked Questions</h2>
+        <h2 className="text-3xl font-reckless font-medium text-center mb-12">Frequently Asked Questions</h2>
         
         <Accordion type="single" collapsible className="space-y-4">
           <AccordionItem value="item-1" className="border rounded-lg p-2">

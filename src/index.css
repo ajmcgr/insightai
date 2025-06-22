@@ -14,6 +14,15 @@
 
 @font-face {
   font-family: 'Reckless';
+  src: url('/Reckless-Medium.woff2') format('woff2'),
+       url('/Reckless-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Reckless';
   src: url('/Reckless-Bold.woff2') format('woff2'),
        url('/Reckless-Bold.woff') format('woff');
   font-weight: 700;
@@ -50,12 +59,12 @@
   }
 
   .heading-xl {
-    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-primary;
+    @apply text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight text-primary;
     font-family: 'Reckless', serif !important;
   }
 
   .heading-lg {
-    @apply text-3xl md:text-4xl font-bold tracking-tight text-primary;
+    @apply text-3xl md:text-4xl font-medium tracking-tight text-primary;
     font-family: 'Reckless', serif !important;
   }
 
