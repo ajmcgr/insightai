@@ -10,24 +10,55 @@ const Hero = () => {
     script.async = true;
     document.body.appendChild(script);
 
-    // Debug font loading
-    console.log("Font loading check:");
+    // Enhanced font loading debug
+    console.log("=== Font Loading Debug ===");
+    
+    // Check if font files are accessible
+    const fontUrls = [
+      '/Reckless-Regular.woff2',
+      '/Reckless-Medium.woff2', 
+      '/Reckless-Bold.woff2'
+    ];
+    
+    fontUrls.forEach(url => {
+      fetch(url)
+        .then(response => {
+          console.log(`Font file ${url}:`, response.ok ? 'Found' : 'Not found');
+        })
+        .catch(() => {
+          console.log(`Font file ${url}: Not accessible`);
+        });
+    });
+
     document.fonts.ready.then(() => {
-      const testElement = document.createElement('div');
-      testElement.style.fontFamily = 'Reckless, serif';
-      testElement.style.fontWeight = '500';
-      testElement.textContent = 'Test';
-      document.body.appendChild(testElement);
+      console.log("Document fonts ready");
       
-      const computedStyle = window.getComputedStyle(testElement);
-      console.log("Computed font family:", computedStyle.fontFamily);
-      console.log("Available fonts:", Array.from(document.fonts).map(f => f.family));
+      // Test each font weight
+      const weights = ['400', '500', '700'];
+      weights.forEach(weight => {
+        const testElement = document.createElement('div');
+        testElement.style.fontFamily = 'Reckless, serif';
+        testElement.style.fontWeight = weight;
+        testElement.style.fontSize = '20px';
+        testElement.textContent = `Test ${weight}`;
+        testElement.style.position = 'absolute';
+        testElement.style.top = '-1000px';
+        document.body.appendChild(testElement);
+        
+        const computedStyle = window.getComputedStyle(testElement);
+        console.log(`Font weight ${weight} - Family: ${computedStyle.fontFamily}, Weight: ${computedStyle.fontWeight}`);
+        
+        document.body.removeChild(testElement);
+      });
       
-      document.body.removeChild(testElement);
+      // List all loaded fonts
+      console.log("All loaded fonts:", Array.from(document.fonts).map(f => `${f.family} ${f.weight} ${f.style}`));
     });
 
     return () => {
-      document.body.removeChild(script);
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
     };
   }, []);
 
@@ -36,13 +67,15 @@ const Hero = () => {
       {/* Hero content */}
       <div className="max-w-4xl mx-auto text-center relative z-10 pt-40 pb-32">
         <motion.h1 
-          className="font-reckless heading-xl mb-6 text-primary test-reckless"
+          className="font-reckless heading-xl mb-6 text-primary"
+          style={{ fontFamily: 'Reckless, Georgia, serif', fontWeight: 500 }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           Explore the latest online search trends
         </motion.h1>
+        
         <motion.p 
           className="text-xl font-normal text-primary mb-8"
           initial={{ opacity: 0, y: 20 }}
