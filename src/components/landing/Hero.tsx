@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -11,6 +10,22 @@ const Hero = () => {
     script.async = true;
     document.body.appendChild(script);
 
+    // Debug font loading
+    console.log("Font loading check:");
+    document.fonts.ready.then(() => {
+      const testElement = document.createElement('div');
+      testElement.style.fontFamily = 'Reckless, serif';
+      testElement.style.fontWeight = '500';
+      testElement.textContent = 'Test';
+      document.body.appendChild(testElement);
+      
+      const computedStyle = window.getComputedStyle(testElement);
+      console.log("Computed font family:", computedStyle.fontFamily);
+      console.log("Available fonts:", Array.from(document.fonts).map(f => f.family));
+      
+      document.body.removeChild(testElement);
+    });
+
     return () => {
       document.body.removeChild(script);
     };
@@ -21,7 +36,7 @@ const Hero = () => {
       {/* Hero content */}
       <div className="max-w-4xl mx-auto text-center relative z-10 pt-40 pb-32">
         <motion.h1 
-          className="font-reckless heading-xl mb-6 text-primary"
+          className="font-reckless heading-xl mb-6 text-primary test-reckless"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -36,6 +51,7 @@ const Hero = () => {
         >
           Search or explore keywords and see what's happening in real-time with Insight AI
         </motion.p>
+        
         <motion.div 
           className="flex flex-col items-center gap-8"
           initial={{ opacity: 0, y: 20 }}

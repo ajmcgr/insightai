@@ -43,9 +43,15 @@
     @apply bg-neutral-100 text-primary font-sans antialiased;
   }
   
-  /* Ensure Reckless font loads properly */
+  /* Ensure Reckless font loads properly with fallbacks */
   .font-reckless {
+    font-family: 'Reckless', 'Georgia', 'Times New Roman', serif !important;
+  }
+  
+  /* Add a test class to verify font loading */
+  .test-reckless {
     font-family: 'Reckless', serif !important;
+    font-weight: 500;
   }
 }
 
@@ -60,12 +66,14 @@
 
   .heading-xl {
     @apply text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight text-primary;
-    font-family: 'Reckless', serif !important;
+    font-family: 'Reckless', 'Georgia', serif !important;
+    font-weight: 500 !important;
   }
 
   .heading-lg {
     @apply text-3xl md:text-4xl font-medium tracking-tight text-primary;
-    font-family: 'Reckless', serif !important;
+    font-family: 'Reckless', 'Georgia', serif !important;
+    font-weight: 500 !important;
   }
 
   .button-primary {
