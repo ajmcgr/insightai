@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -10,23 +11,40 @@ const Hero = () => {
     script.async = true;
     document.body.appendChild(script);
 
-    // Enhanced font loading debug
-    console.log("=== Font Loading Debug ===");
+    // Enhanced font loading debug with corrected paths
+    console.log("=== Font Loading Debug (Updated Paths) ===");
     
-    // Check if font files are accessible
+    // Check if font files are accessible with /public/ prefix
     const fontUrls = [
-      '/Reckless-Regular.woff2',
-      '/Reckless-Medium.woff2', 
-      '/Reckless-Bold.woff2'
+      '/public/Reckless-Regular.woff2',
+      '/public/Reckless-Medium.woff2', 
+      '/public/Reckless-Bold.woff2'
     ];
     
     fontUrls.forEach(url => {
       fetch(url)
         .then(response => {
-          console.log(`Font file ${url}:`, response.ok ? 'Found' : 'Not found');
+          console.log(`Font file ${url}:`, response.ok ? 'Found' : 'Not found', response.status);
         })
-        .catch(() => {
-          console.log(`Font file ${url}: Not accessible`);
+        .catch(error => {
+          console.log(`Font file ${url}: Error -`, error);
+        });
+    });
+
+    // Also test original paths for comparison
+    const originalFontUrls = [
+      '/Reckless-Regular.woff2',
+      '/Reckless-Medium.woff2', 
+      '/Reckless-Bold.woff2'
+    ];
+    
+    originalFontUrls.forEach(url => {
+      fetch(url)
+        .then(response => {
+          console.log(`Original path ${url}:`, response.ok ? 'Found' : 'Not found', response.status);
+        })
+        .catch(error => {
+          console.log(`Original path ${url}: Error -`, error);
         });
     });
 
