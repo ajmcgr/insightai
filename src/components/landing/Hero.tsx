@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -11,66 +10,10 @@ const Hero = () => {
     script.async = true;
     document.body.appendChild(script);
 
-    // Enhanced font loading debug with corrected paths
-    console.log("=== Font Loading Debug (Updated Paths) ===");
-    
-    // Check if font files are accessible with /public/ prefix
-    const fontUrls = [
-      '/public/Reckless-Regular.woff2',
-      '/public/Reckless-Medium.woff2', 
-      '/public/Reckless-Bold.woff2'
-    ];
-    
-    fontUrls.forEach(url => {
-      fetch(url)
-        .then(response => {
-          console.log(`Font file ${url}:`, response.ok ? 'Found' : 'Not found', response.status);
-        })
-        .catch(error => {
-          console.log(`Font file ${url}: Error -`, error);
-        });
-    });
-
-    // Also test original paths for comparison
-    const originalFontUrls = [
-      '/Reckless-Regular.woff2',
-      '/Reckless-Medium.woff2', 
-      '/Reckless-Bold.woff2'
-    ];
-    
-    originalFontUrls.forEach(url => {
-      fetch(url)
-        .then(response => {
-          console.log(`Original path ${url}:`, response.ok ? 'Found' : 'Not found', response.status);
-        })
-        .catch(error => {
-          console.log(`Original path ${url}: Error -`, error);
-        });
-    });
-
+    // Simple font loading check
     document.fonts.ready.then(() => {
-      console.log("Document fonts ready");
-      
-      // Test each font weight
-      const weights = ['400', '500', '700'];
-      weights.forEach(weight => {
-        const testElement = document.createElement('div');
-        testElement.style.fontFamily = 'Reckless, serif';
-        testElement.style.fontWeight = weight;
-        testElement.style.fontSize = '20px';
-        testElement.textContent = `Test ${weight}`;
-        testElement.style.position = 'absolute';
-        testElement.style.top = '-1000px';
-        document.body.appendChild(testElement);
-        
-        const computedStyle = window.getComputedStyle(testElement);
-        console.log(`Font weight ${weight} - Family: ${computedStyle.fontFamily}, Weight: ${computedStyle.fontWeight}`);
-        
-        document.body.removeChild(testElement);
-      });
-      
-      // List all loaded fonts
-      console.log("All loaded fonts:", Array.from(document.fonts).map(f => `${f.family} ${f.weight} ${f.style}`));
+      console.log("Fonts loaded. Reckless font family available:", 
+        document.fonts.check('16px Reckless') ? 'YES' : 'NO');
     });
 
     return () => {
@@ -84,6 +27,16 @@ const Hero = () => {
     <header className="container-padding py-12 bg-accent-yellow mt-[72px]">
       {/* Hero content */}
       <div className="max-w-4xl mx-auto text-center relative z-10 pt-40 pb-32">
+        {/* Visual font test - temporary */}
+        <div className="mb-4 p-2 bg-white/20 rounded text-sm">
+          <div style={{ fontFamily: 'Reckless, serif', fontWeight: 500 }}>
+            Font Test: This should be Reckless Medium
+          </div>
+          <div className="font-reckless">
+            Font Test: This should also be Reckless (via CSS class)
+          </div>
+        </div>
+
         <motion.h1 
           className="font-reckless heading-xl mb-6 text-primary"
           style={{ fontFamily: 'Reckless, Georgia, serif', fontWeight: 500 }}
