@@ -27,16 +27,6 @@ const Hero = () => {
     <header className="container-padding py-12 bg-accent-yellow mt-[72px]">
       {/* Hero content */}
       <div className="max-w-4xl mx-auto text-center relative z-10 pt-40 pb-32">
-        {/* Visual font test - temporary */}
-        <div className="mb-4 p-2 bg-white/20 rounded text-sm">
-          <div style={{ fontFamily: 'Reckless, serif', fontWeight: 500 }}>
-            Font Test: This should be Reckless Medium
-          </div>
-          <div className="font-reckless">
-            Font Test: This should also be Reckless (via CSS class)
-          </div>
-        </div>
-
         <motion.h1 
           className="font-reckless heading-xl mb-6 text-primary"
           style={{ fontFamily: 'Reckless, Georgia, serif', fontWeight: 500 }}
